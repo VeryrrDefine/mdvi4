@@ -1,0 +1,151 @@
+import { saveSerializer } from './serializer'
+import { reactive } from 'vue'
+import PowiainaNum from 'powiaina_num.js'
+import type { Tab } from '../tab/Tabs'
+const SAVE_ID = 'caution_wetfloor2'
+export interface Player {
+  points: PowiainaNum
+  lastUpdated: number
+  buyables: {
+    autoclickers: PowiainaNum
+    accelerators: PowiainaNum
+  }
+  tab: Tab
+}
+
+function getInitialPlayerData(): Player {
+  return {
+    points: new PowiainaNum(0),
+    lastUpdated: Date.now(),
+    buyables: {
+      autoclickers: new PowiainaNum(0),
+      accelerators: new PowiainaNum(0),
+    },
+    tab: {
+      curTab: [0, 0],
+      memoryTab: [0],
+    },
+  }
+}
+
+let player: Player = getInitialPlayerData()
+
+var blackListProperties: string[] = []
+function deepCopyProps(source: any, target: any) {
+  for (let key in source) {
+    if (source.hasOwnProperty(key)) {
+      // 如果源对象的属性是对象或数组，则递归复制
+      if (
+        typeof source[key] === 'object' &&
+        !(source[key] instanceof PowiainaNum) &&
+        source[key] !== null
+      ) {
+        // 如果目标对象没有这个属性，或者属性是null，则创建一个新的
+        if (
+          !target.hasOwnProperty(key) ||
+          target[key] == null ||
+          Array.isArray(source[key]) !== Array.isArray(target[key])
+        ) {
+          target[key] = Array.isArray(source[key]) ? [] : {}
+        }
+        // 递归复制属性
+        deepCopyProps(source[key], target[key])
+      } else {
+        // 如果属性不是对象或数组，则直接复制
+        target[key] = source[key]
+      }
+    }
+  }
+}
+
+function transformToP(object: any): any {
+  for (let key in object) {
+    if (blackListProperties.includes(key)) {
+      continue
+    }
+    if (
+      typeof object[key] === 'string' &&
+      !new PowiainaNum(object[key]).array[0].toString().includes('NaN')
+    ) {
+      object[key] = new PowiainaNum(object[key])
+    }
+    if (typeof object[key] === 'object') {
+      transformToP(object[key])
+    }
+  }
+}
+
+function load(): void {
+  player = getInitialPlayerData()
+  if (localStorage.getItem(SAVE_ID)) {
+    let temp_player: any = saveSerializer.deserialize(localStorage.getItem(SAVE_ID))
+    deepCopyProps(temp_player, player)
+    transformToP(player)
+  }
+  player = reactive(player) as Player
+}
+
+function save(): void {
+  localStorage.setItem(SAVE_ID, saveSerializer.serialize(player))
+}
+
+function hardReset(): void {
+  Object.assign(player, getInitialPlayerData()) as Player
+}
+
+export { load, save, player }
+
+export function requestHardReset() {
+  if (
+    prompt(
+      '你真的想要硬重置吗? 你的一切进度都将被重置, 且不会获得奖励!\
+  填写“是”以确认',
+    ) == '是'
+  )
+    hardReset()
+}
+
+export function export_file(): void {
+  let str = saveSerializer.serialize(player)
+  let file = new Blob([str], {
+    type: 'text/plain',
+  })
+  window.URL = window.URL || window.webkitURL
+  let a = document.createElement('a')
+  a.href = window.URL.createObjectURL(file)
+  a.download = 'Baixie Incremental Save - ' + getCurrentBeijingTime() + '.txt'
+  a.click()
+}
+
+function getCurrentBeijingTime(): string {
+  const t = new Date(),
+    e = t.getUTCFullYear(),
+    r = String(t.getUTCMonth() + 1).padStart(2, '0'),
+    a = String(t.getUTCDate()).padStart(2, '0'),
+    n = t.getUTCHours(),
+    g = t.getUTCMinutes(),
+    i = t.getUTCSeconds(),
+    S = t.getUTCMilliseconds()
+  let o = (n + 8) % 24
+  return (
+    o < 0 && (t.setUTCDate(t.getUTCDate() + 1), (o += 24)),
+    `${e}-${r}-${a} ${o.toString().padStart(2, '0')}:${g.toString().padStart(2, '0')}:${i.toString().padStart(2, '0')}.${S.toString().padStart(3, '0')}`
+  )
+}
+
+export function import_file(): void {
+  let a = document.createElement('input')
+  a.setAttribute('type', 'file')
+  a.click()
+  a.onchange = () => {
+    let fr = new FileReader()
+    if (a.files == null) return void alert('未选择文件')
+    fr.onload = () => {
+      let save = fr.result
+      let temp_player: any = saveSerializer.deserialize(save)
+      transformToP(temp_player)
+      Object.assign(player, temp_player)
+    }
+    fr.readAsText(a.files[0])
+  }
+}
