@@ -1,8 +1,99 @@
 * {
   background: #000033;
   color: white;
-  font-family: Arial;
 }
 body {
   margin: 0;
+}
+.horizontal_line {
+  width: 100%;
+  border-bottom: solid 2px #333;
+  height: 5px;
+  margin-bottom: 13px;
+}
+
+button {
+  cursor: pointer;
+  font-size: 12px;
+
+  &:not(.tab-computer) {
+    max-width: 250px;
+  }
+  padding: 7px 25px;
+  text-decoration: none;
+  border: 1px solid #009;
+  border-radius: 4px 4px;
+  background: #0098;
+  color: white;
+  display: inline-block;
+  position: relative;
+
+  &:hover {
+    border: 1px solid #009;
+    background: #005;
+  }
+
+  &:disabled {
+    border: 1px solid #222;
+    background: #000017;
+    color: #777;
+    cursor: not-allowed;
+  }
+
+  &.tab-computer {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  &.tab-mobile {
+    padding: 0px 0px;
+  }
+}
+
+html {
+  touch-action: manipulation;
+}
+h3 {
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 0;
+}
+
+.c-tachyon-particle-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.o-tachyon-particle {
+  fill: white;
+}
+
+.disabled {
+  filter: brightness(0.5);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.div-center {
+  margin: auto;
+}
+
+.resetbutton {
+  background: linear-gradient(to right, #0098, #0038, #0098);
+}
+
+.buyable-box {
+  border: 1px solid #00f;
+  border-radius: 5px;
+  padding-left: 5px;
+  padding-top: 20px;
+  padding-right: 5px;
+  padding-bottom: 20px;
+  margin: 60px;
 }

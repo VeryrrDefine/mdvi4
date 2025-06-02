@@ -1,6 +1,7 @@
 <script lang='ts' setup>
+import {requestedHardReset} from '@/core/saves';
 </script>
 
 <template>
-  <p>那一天的忧郁忧郁起来</p>
+  <div><button @click='requestedHardReset'>硬重置</button></div>
 </template>

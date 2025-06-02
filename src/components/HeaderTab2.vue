@@ -10,7 +10,7 @@ function curTab(){
 <template>
   <div class="tab-comp">
     <div class="tab-1">
-      <SubTab v-for="tab in curTab().subtabs" :content="tab.text" @click="changeSubtab(player.tab, tab.id, curTab().id)"/>
+      <SubTab v-for="tab in curTab().subtabs" :content="tab.text" :key='tab.id' @click="changeSubtab(player.tab, tab.id, curTab().id)"/>
     </div>
   </div>
 </template>

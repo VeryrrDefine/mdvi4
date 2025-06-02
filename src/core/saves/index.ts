@@ -1,7 +1,9 @@
 import { saveSerializer } from './serializer'
 import { reactive } from 'vue'
 import PowiainaNum from 'powiaina_num.js'
+
 import type { Tab } from '../tab/Tabs'
+import Modal from '@/utils/Modal'
 const SAVE_ID = 'caution_wetfloor2'
 export interface Player {
   points: PowiainaNum
@@ -10,7 +12,12 @@ export interface Player {
     autoclickers: PowiainaNum
     accelerators: PowiainaNum
   }
-  tab: Tab
+  tab: Tab,
+  visualSettings: {
+    curFormater: number
+  },
+
+  curDimension: number
 }
 
 function getInitialPlayerData(): Player {
@@ -25,14 +32,19 @@ function getInitialPlayerData(): Player {
       curTab: [0, 0],
       memoryTab: [0],
     },
+
+    visualSettings: {
+      curFormater: 0
+    },
+    curDimension: 0
   }
 }
 
 let player: Player = getInitialPlayerData()
 
-var blackListProperties: string[] = []
+const blackListProperties: string[] = []
 function deepCopyProps(source: any, target: any) {
-  for (let key in source) {
+  for (const key in source) {
     if (source.hasOwnProperty(key)) {
       // 如果源对象的属性是对象或数组，则递归复制
       if (
@@ -59,7 +71,7 @@ function deepCopyProps(source: any, target: any) {
 }
 
 function transformToP(object: any): any {
-  for (let key in object) {
+  for (const key in object) {
     if (blackListProperties.includes(key)) {
       continue
     }
@@ -78,7 +90,7 @@ function transformToP(object: any): any {
 function load(): void {
   player = getInitialPlayerData()
   if (localStorage.getItem(SAVE_ID)) {
-    let temp_player: any = saveSerializer.deserialize(localStorage.getItem(SAVE_ID))
+    const temp_player: any = saveSerializer.deserialize(localStorage.getItem(SAVE_ID))
     deepCopyProps(temp_player, player)
     transformToP(player)
   }
@@ -95,23 +107,15 @@ function hardReset(): void {
 
 export { load, save, player }
 
-export function requestHardReset() {
-  if (
-    prompt(
-      '你真的想要硬重置吗? 你的一切进度都将被重置, 且不会获得奖励!\
-  填写“是”以确认',
-    ) == '是'
-  )
-    hardReset()
-}
+
 
 export function export_file(): void {
-  let str = saveSerializer.serialize(player)
-  let file = new Blob([str], {
+  const str = saveSerializer.serialize(player)
+  const file = new Blob([str], {
     type: 'text/plain',
   })
   window.URL = window.URL || window.webkitURL
-  let a = document.createElement('a')
+  const a = document.createElement('a')
   a.href = window.URL.createObjectURL(file)
   a.download = 'Baixie Incremental Save - ' + getCurrentBeijingTime() + '.txt'
   a.click()
@@ -134,18 +138,46 @@ function getCurrentBeijingTime(): string {
 }
 
 export function import_file(): void {
-  let a = document.createElement('input')
+  const a = document.createElement('input')
   a.setAttribute('type', 'file')
   a.click()
   a.onchange = () => {
-    let fr = new FileReader()
+    const fr = new FileReader()
     if (a.files == null) return void alert('未选择文件')
     fr.onload = () => {
-      let save = fr.result
-      let temp_player: any = saveSerializer.deserialize(save)
+      const save = fr.result
+      const temp_player: any = saveSerializer.deserialize(save)
       transformToP(temp_player)
       Object.assign(player, temp_player)
     }
     fr.readAsText(a.files[0])
   }
+}
+
+export function requestedHardReset() {
+  Modal.show({
+    title: '硬重置存档!?!?',
+    content: '你真的要硬重置吗？这将重置当前存档的所有内容，你不会获得任何奖励！',
+    closeOnClickMask: false,
+    buttons: [
+      {
+        text: '取消',
+        handler(e, instance) {
+          instance?.handleCancel?.()
+        },
+        class: 'confirm-button'
+      },
+      {
+        text: '我确定我在做什么！',
+        handler(e, instance) {
+          instance?.handleConfirm?.()
+          hardReset()
+        },
+        class: 'danger-button'
+      },
+
+    ],
+    showCancelButton: false,
+    showConfirmButton: false
+  })
 }

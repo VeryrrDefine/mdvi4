@@ -34,6 +34,8 @@ export enum TokenType {
   ELSE,
 
   STRING,
+
+  COMMENT,
 }
 
 export const keywords: { [key: string]: TokenType } = {

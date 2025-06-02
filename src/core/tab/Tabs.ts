@@ -30,6 +30,9 @@ export function changeSubtab(tab: Tab, subTab: number, primTab: number) {
 import Place from '@/components/contents/Place.vue'
 import Options from '@/components/contents/Options.vue'
 import About from '@/components/contents/About.vue'
+import Automator from '@/components/contents/Automator.vue'
+import Visual from '@/components/contents/Visual.vue'
+import PointsTab from '@/components/contents/PointsTab/PointsTab.vue'
 import type { DefineComponent } from 'vue'
 export const tabs: Tabset = {
   tabs: [
@@ -39,7 +42,7 @@ export const tabs: Tabset = {
       subtabs: [
         {
           text: 'Main',
-          component: Place,
+          component: PointsTab,
           id: 0,
         },
       ],
@@ -58,8 +61,25 @@ export const tabs: Tabset = {
           component: About,
           id: 1,
         },
+        {
+          text: 'Visual',
+          component: Visual,
+          id: 2,
+        },
 
       ],
     },
+    {
+      text: 'Auto',
+      id: 2,
+      subtabs: [
+        {
+          text: 'Automator',
+          id: 0,
+          component: Automator
+        }
+      ]
+    },
+
   ],
 }

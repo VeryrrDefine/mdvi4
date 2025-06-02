@@ -5,8 +5,6 @@ import PowiainaNum from 'powiaina_num.js'
 export default (function () {
   /// FUNCTIONSTART  DONT REMOVE THIS LINE
   'use strict'
-  let MAX_LOGP1_REPEATS = 48
-  let LOG5E = 0.6213349345596119
 
   function arraySort(array) {
     array.sort(function (a, b) {
@@ -76,9 +74,6 @@ export default (function () {
   function myPolarize(array, hasOperationRepeat = true, toArrowVared = false) {
     !debug || console.log('input', array)
     let originum = new PowiainaNum(array)
-    var arrows = 0
-    var repeation = 1
-    var bottom = 0
     if (array.length == 1) {
       if (array[0] >= 1e10) {
         return { arrows: 1, repeation: 2, bottom: Math.log10(Math.log10(array[0])) }
@@ -315,7 +310,6 @@ export default (function () {
       return 'H' + format(n, precision)
     } else if (num.lt('J1000000')) {
       // 5J4 ~ J1,000,000
-      let t = num.clone()
       let pol = myPolarize(array)
       // arrows|bottom
       // Jx define:
@@ -409,7 +403,6 @@ S           B        B
       num.operator(2, 2, 1, 0)
       return 'L'.repeat(rep) + format(num)
     } else if (num.lt('l0 s1 a[10, [999999, 1, 2, 1]]')) {
-      let num2 = num.clone()
       let pol = myPolarize(array, 0)
       return `${regularFormat(pol.bottom, precision4)}M${commaFormat(pol.arrows)}`
     }

@@ -127,7 +127,7 @@ export class Parser {
       return args
     }
     this.nextToken()
-    var t = this.parseExpression(LOWEST)
+    let t = this.parseExpression(LOWEST)
     if (t) args.push(t)
     while (this.peekTokenIs(TokenType.COMMA)) {
       this.nextToken()

@@ -1,13 +1,20 @@
 import PowiainaNum from 'powiaina_num.js'
 import { player, type Player } from '../saves'
-
+import { getPointsCap, getPointsGainPS } from '../game'
 let diff = 0
 export function mainLoop() {
-  diff = Date.now() - player.lastUpdated
-  player.points = player.points.add(diff)
+  diff = (Date.now() - player.lastUpdated)/1000
+  player.points = player.points.add(getPointsGainPS().mul(diff)).min(getPointsCap())
   player.lastUpdated = Date.now()
 }
 export { diff }
+
+
+
+
+
+
+
 
 function isMobile() {
   if ('userAgentData' in navigator) {
@@ -19,16 +26,16 @@ function isMobile() {
     )
   }
 }
-export let device = isMobile() ? 'mobile' : 'computer'
+export const device = isMobile() ? 'mobile' : 'computer'
 //device = "computer"
 
 class Chunk {
   private new_chunks: (number | [number, number])[]
 
   constructor(r: number[]) {
-    let min: number[] = []
-    let max: number[] = []
-    for (let i of r) {
+    const min: number[] = []
+    const max: number[] = []
+    for (const i of r) {
       const [minVal, maxVal] = this.getChunk(i)
       min.push(minVal)
       max.push(maxVal)
@@ -47,8 +54,8 @@ class Chunk {
   }
 
   unchunkify(): number[] {
-    let list: number[] = []
-    for (let i of this.new_chunks) {
+    const list: number[] = []
+    for (const i of this.new_chunks) {
       const [minVal, maxVal] = this.getChunk(i)
       for (let x = minVal; x <= maxVal; x++) {
         list.push(x)
@@ -70,7 +77,7 @@ class Chunk {
   }
 
   push(...x: number[]) {
-    let a = this.unchunkify()
+    const a = this.unchunkify()
     for (let i = 0; i < x.length; i++) {
       a.push(x[i])
     }
@@ -83,7 +90,7 @@ class Chunk {
 
   include(i: number): boolean {
     if ((this.new_chunks as number[]).includes(i)) return true
-    for (let c of this.new_chunks as [number, number][]) {
+    for (const c of this.new_chunks as [number, number][]) {
       if (c[0] <= i && c[1] >= i) return true
     }
     return false

@@ -50,8 +50,17 @@ export class Lexer {
   }
 
   nextToken(): Token {
-    const token = new Token()
     this.skipWhiteSpace()
+
+    if(this.ch=='&' && this.peekChar()=='/') {
+      while( !(this.peekChar()=="\n"||this.peekChar()=="\r"||this.peekChar()=='')) this.readPosition++
+      return this.nextToken()
+    } else{
+      return this.normalyToken()
+    }
+  }
+  normalyToken(): Token{
+    const token = new Token()
     if (Lexer.symbolsMap[this.ch]) {
       token.type = Lexer.symbolsMap[this.ch]
       token.literal = this.ch
@@ -67,6 +76,7 @@ export class Lexer {
       token.type = TokenType.STRING
       token.literal = this.readString()
     }
+
     if (isLetter(this.ch)) {
       token.literal = this.readIdentifier()
       token.type = lookupIdent(token.literal)
@@ -96,22 +106,22 @@ export class Lexer {
     return token
   }
   readIdentifier(): string {
-    let start = this.position
+    const start = this.position
     while (isLetter(this.ch)) this.readChar()
 
     return this.input.substring(start, this.position)
   }
   readString(): string {
-    let start = this.position
+    const start = this.position
     let res = ''
     while (true) {
       this.readChar()
-      let curChar = this.ch
+      const curChar = this.ch
       if (curChar == '"' || !curChar) break
 
       if (curChar == '\\') {
         this.readChar()
-        let appChar = this.ch
+        const appChar = this.ch
         if (appChar == 'n') res = res.concat('\n')
       } else {
         res = res.concat(curChar)
@@ -120,7 +130,7 @@ export class Lexer {
     return res
   }
   readNumber(): string {
-    let start = this.position
+    const start = this.position
     while (isDigit(this.ch)) this.readChar()
 
     return this.input.substring(start, this.position)

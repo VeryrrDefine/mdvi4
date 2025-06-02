@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
 import { tabs } from '../core/tab/Tabs.ts'
 import { player } from '../core/saves/index.ts'
 

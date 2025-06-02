@@ -2,13 +2,14 @@
 import Header1 from './components/HeaderTab1.vue'
 import Header2 from './components/HeaderTab2.vue'
 import MainContent from './components/MainContent.vue'
+import NewsTicker from './components/NewsTicker.vue'
 </script>
 
 <template>
   <header>
     <Header1 />
     <Header2 />
-    <!-- HEADER1 HEADER2 NEWSTICKER-->
+    <NewsTicker />
   </header>
   <main>
     <MainContent />

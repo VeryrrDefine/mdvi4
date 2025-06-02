@@ -24,14 +24,39 @@ import {
   VReturnValue,
   VString,
   VTypes,
+  VBuiltin
 } from './object'
 import type { VObject } from './object'
-
+import { builtins } from './builtins'
 function isError(o: VObject) {
   return o && o.type() === VTypes.ERROR
 }
+
+interface VObjectConstructor<T extends VObject=VObject>{
+  new (...args:any[]) : T
+}
+type externalInfixType =Array< {
+  left:VObjectConstructor,
+  right:VObjectConstructor,
+  handler: (op:string,left:VObject, right:VObject)=>VObject
+}>
+// 被资本做局了 left不能从值中自动推倒出L对应的类型， left
+
+export const externalInfixHandlers: externalInfixType= [
+  {
+    left: VString,
+    right: VInteger,
+    handler(op, left,right){
+      if (op!="*") return newError("I cant calculate integer "+op+" string")
+      if (left instanceof VString && right instanceof VInteger){
+        return new VString(left.value.repeat(right.value))
+      }
+      return objConst.NULL
+    }
+  }
+]
 export function VEval(node: ASTNode, env: VEnvironment): VObject {
-  var left, right, val, params, body
+  let left, right, val, params, body
   switch (true) {
     case node instanceof Program:
       return evalProgram(node.statements, env)
@@ -87,10 +112,16 @@ export function VEval(node: ASTNode, env: VEnvironment): VObject {
   return objConst.NULL
 }
 function applyFunction(fn: VObject, args: VObject[]) {
-  if (!(fn instanceof VFunction)) return newError('not a function: ' + fn.type())
-  const extendedEnv = extendFunctionEnv(fn, args)
-  const evaluated = VEval(fn.body, extendedEnv)
-  return unwrapReturnValue(evaluated)
+  switch (true){
+    case fn instanceof VFunction:
+      const extendedEnv = extendFunctionEnv(fn, args)
+      const evaluated = VEval(fn.body, extendedEnv)
+      return unwrapReturnValue(evaluated)
+    case fn instanceof VBuiltin:
+      return fn.fn(...args)
+    default:
+      return newError('not a function: ' + fn.type())
+  }
 }
 function extendFunctionEnv(fn: VFunction, args: VObject[]) {
   const env = new VEnvironment(fn.env)
@@ -114,9 +145,13 @@ function evalExpressions(expressions: Expression[], env: VEnvironment) {
 }
 function evalIdentifier(node: Identifier, env: VEnvironment) {
   const val = env.get(node.tokenLiteral())
-  if (!val) return newError('cannot find value of ' + node.tokenLiteral())
+  if (val) return val
 
-  return val
+  const val2: VBuiltin | undefined=builtins[node.tokenLiteral()]
+
+  if (!val2) return newError('cannot find value of ' + node.tokenLiteral())
+
+  return val2
 }
 function evalIfExpression(ie: IfExpression, env: VEnvironment) {
   const condition = VEval(ie.condition, env)
@@ -157,9 +192,18 @@ export function evalBlockStatements(stmts: Statement[], env: VEnvironment): VObj
   return result
 }
 function evalInfixExpression(operator: string, left: VObject, right: VObject): VObject {
+  for (const handlerObj of externalInfixHandlers) {
+    if (left instanceof handlerObj.left
+      && right instanceof handlerObj.right
+    ){
+      return handlerObj.handler(operator, left, right)
+    }
+  }
   switch (true) {
     case left instanceof VInteger && right instanceof VInteger:
       return evalIntegerInfixExpression(operator, left, right)
+    case left instanceof VString && right instanceof VString && operator=='+':
+      return new VString(left.value+right.value)
   }
   switch (operator) {
     case '==':
@@ -229,7 +273,7 @@ function evalBangOpExpression(right: VObject): VBoolean {
 function newError(message: string) {
   return new VError(message)
 }
-const objConst = {
+export const objConst = {
   TRUE: new VBoolean(true),
   FALSE: new VBoolean(false),
   NULL: new VNull(),
@@ -239,7 +283,7 @@ export class VEnvironment {
   store: { [key: string]: VObject } = {}
   outer: VEnvironment | null
   get(name: string): VObject | undefined {
-    let obj = this.store?.[name]
+    const obj = this.store?.[name]
     if (!obj && this.outer) {
       return this.outer.get(name)
     }
