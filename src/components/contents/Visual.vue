@@ -1,13 +1,22 @@
-<script lang='ts' setup>
-const changelogs = [
-  {version:'4.0.0.1 beta 2', log:'feat: Automator and modal'},
-  {version:'4.0.0.1 beta 1', log:'feat: Tabs, subtabs, points, game-loading, Basic UI'}
-]
+<script lang="ts" setup>
+import { formaterNameMap, formaters } from '@/lib/formater'
+import { player } from '@/core/saves'
+function displayName(val: formaters) {
+  return formaterNameMap.get(val)
+}
 </script>
 
 <template>
   <div>
-    <p>作者: VeryrrDefine</p>
-    <p>版本: {{changelogs[0].version}}</p>
+    <div>
+      <label for="enum-select">选择记数法:</label>
+      <select name="formaters" id="enum-select" v-model="player.visualSettings.curFormater">
+        <template v-for="(value, key) in formaters" :key="key">
+          <option v-if="formaterNameMap.has(value)" :value="value">
+            {{ displayName(value) }}
+          </option>
+        </template>
+      </select>
+    </div>
   </div>
 </template>

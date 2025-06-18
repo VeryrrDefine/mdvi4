@@ -2,7 +2,7 @@
 // Code snippets from [format-expantanum.js by cloudytheconqueror]
 import PowiainaNum from 'powiaina_num.js'
 
-export default (function () {
+const formatFunc = (function () {
   /// FUNCTIONSTART  DONT REMOVE THIS LINE
   'use strict'
 
@@ -71,7 +71,12 @@ export default (function () {
   function toggle() {
     debug = !debug
   }
-  function myPolarize(array, hasOperationRepeat = true, toArrowVared = false) {
+  function myPolarize(
+    array,
+    hasOperationRepeat = true,
+    toArrowVared = false,
+    parseToArrowNum = -1,
+  ) {
     !debug || console.log('input', array)
     let originum = new PowiainaNum(array)
     if (array.length == 1) {
@@ -106,7 +111,8 @@ export default (function () {
           !toArrowVared &&
           ptr == 0 &&
           typeof array[ptr + 1] == 'number' &&
-          (hasOperationRepeat || (!hasOperationRepeat && array[ptr][1] == 1))
+          (hasOperationRepeat || (!hasOperationRepeat && array[ptr][1] == 1)) &&
+          array[ptr][0] >= parseToArrowNum
         )
           break // array [[],number]
         if (toArrowVared && ptr == 0 && typeof array[ptr + 1] == 'number' && array[ptr][0] == 'x')
@@ -230,7 +236,9 @@ export default (function () {
     if (i < array.length) array[i][1] = 0
   }
 
-  function format(num, precision = 4) {
+  function format(num, precision = 4, options = {}) {
+    const UCF = !!(options.UCF || false)
+    const replaceBeforeF = options.replaceBeforeF
     if (PowiainaNum.isNaN(num)) return 'NaN'
     let precision2 = Math.max(3, precision) // for e
     let precision3 = Math.max(4, precision) // for F, G, H
@@ -269,6 +277,8 @@ export default (function () {
       // 1F5 ~ F1,000,000
       let pol = myPolarize(array, 1)
       //return JSON.stringify(pol);
+
+      if (UCF) return `F${pol.repeation + Math.log10(pol.bottom)}`
       return regularFormat(pol.bottom, precision3) + 'F' + commaFormat(pol.repeation)
     } else if (num.lt('10^^^5')) {
       // F1,000,000 ~ 1G5
@@ -283,6 +293,7 @@ export default (function () {
     } else if (num.lt('10^^^1000000')) {
       // 1G5 ~ G1,000,000
       let pol = myPolarize(array, 1)
+      if (UCF) return `G${pol.repeation + Math.log10(pol.bottom)}`
       return regularFormat(pol.bottom, precision3) + 'G' + commaFormat(pol.repeation)
     } else if (num.lt('10^^^^5')) {
       // G1,000,000 ~ 1H5
@@ -297,6 +308,7 @@ export default (function () {
     } else if (num.lt('10^^^^1000000')) {
       // 1H5 ~ H1,000,000
       let pol = myPolarize(array, 1)
+      if (UCF) return `H${pol.repeation + Math.log10(pol.bottom)}`
       return regularFormat(pol.bottom, precision3) + 'H' + commaFormat(pol.repeation)
     } else if (num.lt('10^^^^^5')) {
       // H1,000,000 ~ 5J4
@@ -413,7 +425,17 @@ S           B        B
   format.arrayMerge = arrayMerge
   format.stopFormating = stopFormating
   format.toggle = toggle
+
+  format.regularFormat = regularFormat
+  format.commaFormat = commaFormat
   /// FUNCTION
 
   return format
 })()
+
+export default formatFunc
+
+export const regularFormat = formatFunc.regularFormat
+
+export const commaFormat = formatFunc.commaFormat
+export const myPolarize = formatFunc.myPolarize

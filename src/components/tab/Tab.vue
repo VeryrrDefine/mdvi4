@@ -1,15 +1,25 @@
 <template>
-  <div>
+  <div :class="device">
     {{ props.content }}
   </div>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps(['content'])
+import { device } from '@/core/game-loops';
+  const props = defineProps(['content'])
+
 </script>
 
 <style scoped>
 div {
+  border: #33f 1px solid;
+}
+.computer {
+  padding: 5px;
+  margin: 6px;
+}
+.mobile {
+
   width: calc(33% - 0.5px);
   height: calc(100% - 1px);
   display: flex;
@@ -17,6 +27,5 @@ div {
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;
-  border: #33f 1px solid;
 }
 </style>

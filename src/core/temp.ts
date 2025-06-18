@@ -1,10 +1,11 @@
-import {reactive} from "vue"
+import { reactive } from 'vue'
 
-function tempData(){
+function tempData() {
   return {
-    automatorresult:''
-  }
+    automatorresult: '',
 
+    nocap: false,
+  }
 }
 
 export var temp = tempData()

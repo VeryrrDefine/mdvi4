@@ -16,7 +16,7 @@ export interface FieldConfig {
 
 export interface ButtonConfig {
   text: string
-  handler: (e?:MouseEvent, instance?: ModalInstance) => void
+  handler: (e?: MouseEvent, instance?: ModalInstance) => void
   class?: string
   disabled?: boolean
 }
@@ -72,7 +72,7 @@ const ModalService = {
       updateButtons: (buttons: ButtonConfig[]) => {
         customButtons.value = buttons.map((btn) => ({
           ...btn,
-          handler: () => btn.handler(undefined,modalInstance!),
+          handler: () => btn.handler(undefined, modalInstance!),
         }))
       },
       updateContent: (content: string) => {
@@ -126,7 +126,7 @@ const ModalService = {
             progress: progress.value,
             customButtons: customButtons.value.map((btn) => ({
               ...btn,
-              handler: () => btn.handler(undefined,modalInstance!), // 直接使用实例引用
+              handler: () => btn.handler(undefined, modalInstance!), // 直接使用实例引用
             })),
             'onUpdate:visible': (val: boolean) => {
               if (!val) controller.close()

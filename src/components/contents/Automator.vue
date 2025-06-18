@@ -1,46 +1,20 @@
-<script lang='ts' setup>
-import { VEnvironment, evalProgram } from '../../lib/vrd-lang/evaluator.ts';
-import { Lexer } from '../../lib/vrd-lang/lexer.ts';
-import { Parser } from '../../lib/vrd-lang/parser.ts';
+<script lang="ts" setup>
+import { VEnvironment, evalProgram } from '../../lib/vrd-lang/evaluator.ts'
+import { Lexer } from '../../lib/vrd-lang/lexer.ts'
+import { Parser } from '../../lib/vrd-lang/parser.ts'
 import { ref } from 'vue'
-import {temp} from '../../core/temp.ts'
-const code = ref(`
-&/
-&/
-&/
-&/ 等后期再开放这个自动机
-&/
-&/
-&/
-
-
-&/ Veryrrd language
-&/ basics
-
-&/ variable:
-let a = 3
-
-&/ return:
-&/ make the program ended up instantly, or return a value in function
-&/ return ...
-
-&/ if statement:
-&/ if (expression) {statements} else {statements}
-
-&/ you can also use let ... = if(...){...}, like javascript ?: syntax
-
-&/ comment is start with '&/'
-
-
-&/ function: fn(...){} function(...){}
-
-`)
+import { temp } from '../../core/temp.ts'
+const code = ref()
 const result = {
-  get value() { return temp.automatorresult },
-  set value(x) { temp.automatorresult = x}
+  get value() {
+    return temp.automatorresult
+  },
+  set value(x) {
+    temp.automatorresult = x
+  },
 }
-function runcode(){
-  result.value=""
+function runcode() {
+  result.value = ''
   const lexer = new Lexer(code.value)
   const parser = new Parser(lexer)
   const program = parser.parseProgram()
@@ -55,8 +29,8 @@ function runcode(){
 
 <template>
   <div>
-    <button @click='runcode'>Run code</button> <br>
-    <textarea v-model='code' v-html='code'></textarea>
+    <button @click="runcode">Run code</button> <br />
+    <textarea v-model="code" v-html="code"></textarea>
     <pre v-html="result.value"></pre>
   </div>
 </template>

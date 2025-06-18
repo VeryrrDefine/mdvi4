@@ -11,6 +11,7 @@ export interface Tabset {
       text: string
       component: DefineComponent<{}, {}, any>
       id: number
+      unlocked?: () => boolean
     }[]
   }[]
 }
@@ -33,7 +34,9 @@ import About from '@/components/contents/About.vue'
 import Automator from '@/components/contents/Automator.vue'
 import Visual from '@/components/contents/Visual.vue'
 import PointsTab from '@/components/contents/PointsTab/PointsTab.vue'
+import LinesTab from '@/components/contents/LinesTab/LinesTab.vue'
 import type { DefineComponent } from 'vue'
+import { player } from '../saves'
 export const tabs: Tabset = {
   tabs: [
     {
@@ -44,6 +47,14 @@ export const tabs: Tabset = {
           text: 'Main',
           component: PointsTab,
           id: 0,
+        },
+        {
+          text: 'Line',
+          component: LinesTab,
+          id: 1,
+          unlocked() {
+            return player.curDimension >= 1
+          },
         },
       ],
     },
@@ -66,7 +77,6 @@ export const tabs: Tabset = {
           component: Visual,
           id: 2,
         },
-
       ],
     },
     {
@@ -76,10 +86,9 @@ export const tabs: Tabset = {
         {
           text: 'Automator',
           id: 0,
-          component: Automator
-        }
-      ]
+          component: Automator,
+        },
+      ],
     },
-
   ],
 }

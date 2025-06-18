@@ -1,8 +1,8 @@
 * {
-  background: #000033;
   color: white;
 }
 body {
+  background: #000033;
   margin: 0;
 }
 .horizontal_line {
@@ -11,7 +11,10 @@ body {
   height: 5px;
   margin-bottom: 13px;
 }
-
+select {
+  background-color: #000033;
+  border: #0000aa 2px solid;
+}
 button {
   cursor: pointer;
   font-size: 12px;
@@ -96,4 +99,20 @@ h3 {
   padding-right: 5px;
   padding-bottom: 20px;
   margin: 60px;
+}
+.asprad {
+  aspect-ratio: 1/1;
+}
+.gunmu {
+  opacity: 0;
+  animation: linear 5s disappears;
+}
+
+@keyframes disappears {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

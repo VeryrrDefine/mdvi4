@@ -2,11 +2,10 @@ import { createApp } from 'vue'
 import App from '../App.vue'
 import { mainLoop } from './game-loops'
 import { load, save } from './saves'
-import {initTemp} from './temp'
-import {postInitVRDLang} from './vrd-lang'
+import { initTemp } from './temp'
+import { postInitVRDLang } from './vrd-lang'
 
 export function init() {
-
   load()
   initTemp()
   postInitVRDLang()

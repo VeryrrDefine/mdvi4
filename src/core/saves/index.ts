@@ -4,6 +4,7 @@ import PowiainaNum from 'powiaina_num.js'
 
 import type { Tab } from '../tab/Tabs'
 import Modal from '@/utils/Modal'
+import { formaters } from '@/lib/formater'
 const SAVE_ID = 'caution_wetfloor2'
 export interface Player {
   points: PowiainaNum
@@ -12,12 +13,18 @@ export interface Player {
     autoclickers: PowiainaNum
     accelerators: PowiainaNum
   }
-  tab: Tab,
+  tab: Tab
   visualSettings: {
-    curFormater: number
-  },
-
+    curFormater: formaters
+  }
+  upgrades: {
+    linepoint1: boolean
+    linepoint2: boolean
+    linepoint3: boolean
+    linepoint4: boolean
+  }
   curDimension: number
+  linePoints: PowiainaNum
 }
 
 function getInitialPlayerData(): Player {
@@ -32,11 +39,18 @@ function getInitialPlayerData(): Player {
       curTab: [0, 0],
       memoryTab: [0],
     },
-
-    visualSettings: {
-      curFormater: 0
+    upgrades: {
+      linepoint1: false,
+      linepoint2: false,
+      linepoint3: false,
+      linepoint4: false,
     },
-    curDimension: 0
+    visualSettings: {
+      curFormater: 0,
+    },
+    curDimension: 0,
+
+    linePoints: new PowiainaNum(0),
   }
 }
 
@@ -107,8 +121,6 @@ function hardReset(): void {
 
 export { load, save, player }
 
-
-
 export function export_file(): void {
   const str = saveSerializer.serialize(player)
   const file = new Blob([str], {
@@ -157,7 +169,8 @@ export function import_file(): void {
 export function requestedHardReset() {
   Modal.show({
     title: '硬重置存档!?!?',
-    content: '你真的要硬重置吗？这将重置当前存档的所有内容，你不会获得任何奖励！',
+    content:
+      '你真的要硬重置吗？这将重置当前存档的所有内容，你不会获得任何奖励！<img style="height: 1em; vertical-align: middle;" src="jingxia.gif">',
     closeOnClickMask: false,
     buttons: [
       {
@@ -165,7 +178,7 @@ export function requestedHardReset() {
         handler(e, instance) {
           instance?.handleCancel?.()
         },
-        class: 'confirm-button'
+        class: 'confirm-button',
       },
       {
         text: '我确定我在做什么！',
@@ -173,11 +186,10 @@ export function requestedHardReset() {
           instance?.handleConfirm?.()
           hardReset()
         },
-        class: 'danger-button'
+        class: 'danger-button',
       },
-
     ],
     showCancelButton: false,
-    showConfirmButton: false
+    showConfirmButton: false,
   })
 }

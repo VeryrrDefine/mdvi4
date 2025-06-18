@@ -3,10 +3,14 @@ import Header1 from './components/HeaderTab1.vue'
 import Header2 from './components/HeaderTab2.vue'
 import MainContent from './components/MainContent.vue'
 import NewsTicker from './components/NewsTicker.vue'
+import Notify from './components/Notify.vue'
+
+import { device } from './core/game-loops'
 </script>
 
 <template>
-  <header>
+  <Notify />
+  <header :class="device">
     <Header1 />
     <Header2 />
     <NewsTicker />
@@ -17,7 +21,7 @@ import NewsTicker from './components/NewsTicker.vue'
 </template>
 
 <style scoped>
-header {
+header.mobile {
   display: flex;
   flex-direction: column;
   justify-content: space-around;

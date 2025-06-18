@@ -1,9 +1,0 @@
-interface VObjectConstructor<T extends VObject>{
-  new (...args:any[]) : T
-}
-type externalInfixType ={
-  left:VObjectConstructor<T>,
-    right:VObjectConstructor<R>,
-  handler: (op:string,left:T, right:VObject)=>VObject}[]
-
-

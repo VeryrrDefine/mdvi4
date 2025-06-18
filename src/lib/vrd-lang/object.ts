@@ -8,8 +8,8 @@ export enum VTypes {
   RETURN_VALUE_OBJECT = 'RETURN_VALUE',
   ERROR = 'ERROR',
   FUNCTION_OBJ = 'FUNCTION',
-    STRING_OBJ = 'STRING',
-    BUILTIN_OBJ = 'BUILTIN',
+  STRING_OBJ = 'STRING',
+  BUILTIN_OBJ = 'BUILTIN',
 }
 
 export interface VObject {
@@ -103,17 +103,16 @@ export class VFunction implements VObject {
   }
 }
 
-
-export class VBuiltin implements VObject{
+export class VBuiltin implements VObject {
   type(): VTypes {
     return VTypes.BUILTIN_OBJ
   }
   inspect(): string {
     return '<builtin function>'
   }
-  constructor(fn : VBuiltinFunction){
+  constructor(fn: VBuiltinFunction) {
     this.fn = fn
   }
   fn: VBuiltinFunction
 }
-type VBuiltinFunction = (...args :VObject[]) => VObject
+type VBuiltinFunction = (...args: VObject[]) => VObject

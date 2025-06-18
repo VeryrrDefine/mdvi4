@@ -2,7 +2,7 @@
 import { tabs } from '../core/tab/Tabs.ts'
 import { player } from '../core/saves/index.ts'
 
-function curTab(){
+function curTab() {
   return tabs.tabs[player.tab.curTab[0]].subtabs[player.tab.curTab[1]].component
 }
 </script>

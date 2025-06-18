@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import { player } from '@/core/saves/index'
 import news from '@/news'
 
 interface NewsMessage {
@@ -24,7 +23,8 @@ const timers = {
   dynamic: 0,
 }
 
-const randomElement = <T,>(arr: T[]): T | undefined => (arr.length > 0 ? arr[Math.floor(Math.random() * arr.length)] : undefined)
+const randomElement = <T,>(arr: T[]): T | undefined =>
+  arr.length > 0 ? arr[Math.floor(Math.random() * arr.length)] : undefined
 
 const clearAllTimers = () => {
   clearTimeout(timers.delay)
@@ -72,11 +72,11 @@ const prepareNextMessage = () => {
 
   // console.log(news.filter(canShow))
 
-  let temp  = randomElement(news.filter(canShow))
+  let temp = randomElement(news.filter(canShow))
 
   if (!temp) return
 
-   currentNews.value = temp
+  currentNews.value = temp
   // recentTickers.value.push(currentNews.value.id)
   // while (recentTickers.value.length > player.options.news.repeatBuffer) {
   //   recentTickers.value.shift()
@@ -99,8 +99,9 @@ const scrollMessage = () => {
 
   line.value.style.transitionDuration = `${scrollDuration}s`
   line.value.style.transform = 'translateX(-100%)'
-
-  timers.scroll = setTimeout(prepareNextMessage, scrollDuration * 1000)
+  let scrolls = scrollDuration * 1000
+  if (currentNews.value.id == 'a9') scrolls = 5000
+  timers.scroll = setTimeout(prepareNextMessage, scrolls)
 }
 
 const onLineClick = () => {

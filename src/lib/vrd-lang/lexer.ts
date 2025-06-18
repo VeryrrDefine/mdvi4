@@ -52,14 +52,15 @@ export class Lexer {
   nextToken(): Token {
     this.skipWhiteSpace()
 
-    if(this.ch=='&' && this.peekChar()=='/') {
-      while( !(this.peekChar()=="\n"||this.peekChar()=="\r"||this.peekChar()=='')) this.readPosition++
+    if (this.ch == '&' && this.peekChar() == '/') {
+      while (!(this.peekChar() == '\n' || this.peekChar() == '\r' || this.peekChar() == ''))
+        this.readPosition++
       return this.nextToken()
-    } else{
+    } else {
       return this.normalyToken()
     }
   }
-  normalyToken(): Token{
+  normalyToken(): Token {
     const token = new Token()
     if (Lexer.symbolsMap[this.ch]) {
       token.type = Lexer.symbolsMap[this.ch]
