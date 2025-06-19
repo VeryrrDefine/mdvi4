@@ -22,6 +22,8 @@ export interface Player {
     linepoint2: boolean
     linepoint3: boolean
     linepoint4: boolean
+    linepoint5: boolean
+    linepoint6: boolean
   }
   curDimension: number
   linePoints: PowiainaNum
@@ -44,6 +46,8 @@ function getInitialPlayerData(): Player {
       linepoint2: false,
       linepoint3: false,
       linepoint4: false,
+      linepoint5: false,
+      linepoint6: false,
     },
     visualSettings: {
       curFormater: 0,

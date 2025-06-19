@@ -20,7 +20,7 @@ function setnocap() {
       <button @click="addPoints" class="asprad">获得1点数</button>
     </div>
     <p class="text-center" @dblclick="setnocap">
-      请注意， 你当前的点数被限制在 {{ formater(getPointsCap(), 0) }} 以内
+      游戏有一种算法使得点数不能超过 {{ formater(getPointsCap(), 0) }}
     </p>
     <p class="text-center">当前维度: {{ player.curDimension }}</p>
     <Buyable buyable="autoclickers" />

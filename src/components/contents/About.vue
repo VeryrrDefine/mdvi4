@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 const changelogs = [
   {
+    version: '4.0.1',
+    log: "feat: upgrades, panel undone: galaxy click cloud save"
+  },
+  {
     version: '4.0.0.2',
     log: 'feat: linepoints, softcap, iOS10+ compatibility',
   },

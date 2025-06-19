@@ -25,6 +25,8 @@ import Upgrade from '@/components/Upgrade.vue'
       <Upgrade :upgrade="upgrades[1]" currency="line points" />
       <Upgrade :upgrade="upgrades[2]" currency="line points" />
       <Upgrade :upgrade="upgrades[3]" currency="line points" />
+      <Upgrade :upgrade="upgrades[4]" currency="line points" />
+      <Upgrade :upgrade="upgrades[5]" currency="line points" />
     </div>
   </div>
 </template>

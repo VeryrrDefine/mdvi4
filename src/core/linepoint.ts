@@ -3,10 +3,15 @@ import { player } from './saves'
 import {Upgrade} from './upgrade'
 import format from '@/lib/formater'
 export function linePointsGain() {
-  return player.points.root(5).div(10).floor()
+  let gain = player.points.root(5).div(10)
+  if (upgrades[5].status) gain = gain.mul(player.linePoints.root(5))
+  return gain.floor()
 }
 export function nextLineGain() {
-  return linePointsGain().add(1).mul(10).pow(5)
+  let next = linePointsGain().add(1)
+  if (upgrades[5].status) next = next.div(player.linePoints.root(5))
+  next = next.mul(10).pow(5)
+  return next
 }
 export function lineReset(e?: any, force = false) {
   if (linePointsGain().gte(1) || force) {
@@ -123,6 +128,57 @@ export const upgrades = [
       return false
 
     }
-  }
+  },
+  new class extends Upgrade {
+    set status(x: boolean) {
+      player.upgrades.linepoint5 = x
+    }
+    get status(): boolean {
+      return player.upgrades.linepoint5
+    }
+    description(): string {
+      return `linepoint add caps of points(-30)`
+    }
+    cost(): PowiainaNum {
+      return new PowiainaNum(40)
+    }
+    canBuy(): boolean {
+      return player.linePoints.gte(40)
+    }
+    buy(): boolean {
+      if (!this.status && this.canBuy()) {
+        player.linePoints = player.linePoints.sub(30)
+        this.status = true
+        return true
+      }
+      return false
 
+    }
+  },
+  new class extends Upgrade {
+    set status(x: boolean) {
+      player.upgrades.linepoint6 = x
+    }
+    get status(): boolean {
+      return player.upgrades.linepoint6
+    }
+    description(): string {
+      return `linepoints add linepoints gain(-30)`
+    }
+    cost(): PowiainaNum {
+      return new PowiainaNum(100)
+    }
+    canBuy(): boolean {
+      return player.linePoints.gte(100)
+    }
+    buy(): boolean {
+      if (!this.status && this.canBuy()) {
+        player.linePoints = player.linePoints.sub(30)
+        this.status = true
+        return true
+      }
+      return false
+
+    }
+  }
 ]

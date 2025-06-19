@@ -37,6 +37,7 @@ import PointsTab from '@/components/contents/PointsTab/PointsTab.vue'
 import LinesTab from '@/components/contents/LinesTab/LinesTab.vue'
 import type { DefineComponent } from 'vue'
 import { player } from '../saves'
+import PanelTab from '@/components/contents/PanelTab/PanelTab.vue'
 export const tabs: Tabset = {
   tabs: [
     {
@@ -56,6 +57,15 @@ export const tabs: Tabset = {
             return player.curDimension >= 1
           },
         },
+        {
+          text: 'Panel',
+          component: PanelTab,
+          id: 2,
+          unlocked() {
+            return player.curDimension >= 2
+          },
+        },
+
       ],
     },
     {

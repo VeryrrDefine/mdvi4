@@ -25,6 +25,8 @@ declare module 'powiaina_num.js' {
     static readonly GRAHAMS_NUMBER: PowiainaNum
     static readonly THROOTRIADEKOL: PowiainaNum
 
+    abs(): PowiainaNum
+    static abs(x: PowiainaNumSource): PowiainaNum
     plus(other: PowiainaNumSource): PowiainaNum
     static plus(x: PowiainaNumSource, other: PowiainaNumSource): PowiainaNum
     add(other: PowiainaNumSource): PowiainaNum

@@ -14,6 +14,6 @@ export function getPointsGainPS() {
 export function getPointsCap() {
   let cap = new PowiainaNum(1e6)
   if (lpu[2].status) cap = cap.mul(10)
-
+  if (lpu[4].status) cap = cap.mul(player.linePoints.add(1).max(1))
   return cap
 }

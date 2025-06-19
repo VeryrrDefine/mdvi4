@@ -3,7 +3,7 @@ import { reactive } from 'vue'
 function tempData() {
   return {
     automatorresult: '',
-
+    inGalaxyIFrame: false,
     nocap: false,
   }
 }

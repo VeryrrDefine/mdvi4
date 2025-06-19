@@ -17,7 +17,7 @@ function isMobile() {
     const ua = (navigator as any).userAgentData
     return ua.mobile
   } else {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    return /Android|webOS|iPhone||iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent,
     )
   }
