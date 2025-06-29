@@ -4,8 +4,20 @@ import { getPointsCap, getPointsGainPS } from '../game'
 import { temp } from '../temp'
 import {panelPointLoop} from '../panelpoints'
 let diff = 0
+let diff2 = 0;
 export function mainLoop() {
-  diff = (Date.now() - player.lastUpdated) / 1000
+  diff2 = (Date.now() - player.lastUpdated) / 1000
+
+  diff = diff2;
+  if (player.gameBoost > 0) {
+    if (player.gameBoost<diff2) {
+      diff+=player.gameBoost;
+      player.gameBoost = 0;
+    } else {
+      diff*=2;
+      player.gameBoost-=diff2;
+    }
+  }
   player.points = player.points
     .add(getPointsGainPS().mul(diff))
     .min(temp.nocap ? Infinity : getPointsCap())

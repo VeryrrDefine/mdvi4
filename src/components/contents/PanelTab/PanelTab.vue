@@ -24,6 +24,9 @@ import CenterDiv from '@/components/ui/CenterDiv.vue';
       <MultiTextTag tag="panelpointpower" />(+/s),</p>
       <MultiTextTag tag="whichgivesyou" /> <span class="restext">{{ formater (player.panelPointPower)}}</span> line points per second
     </CenterDiv>
+    <CenterDiv>
+      Get 2 panel points to unlock next part
+    </CenterDiv>
     <!--
     <CenterDiv>
       <MultiTextTag tag="youhave" />

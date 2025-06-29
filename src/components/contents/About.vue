@@ -2,6 +2,10 @@
 
 const changelogs = [
   {
+    version: '4.0.2-beta.2',
+    log: "feat: game boost"
+  },
+  {
     version: '4.0.2-beta.1',
     log: "feat: panel reset & power undone: offlinedtime"
   },

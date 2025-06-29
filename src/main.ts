@@ -29,10 +29,10 @@ declare global {
 
 if (import.meta.env.DEV) {
   window.player = player
-  window.PowiainaNum = PowiainaNum
   window.Modal = Modal
-  window.format = formater
   window.parseString = parseString
   window.VEnvironment = VEnvironment
   window.temp = temp
 }
+  window.PowiainaNum = PowiainaNum
+  window.format = formater

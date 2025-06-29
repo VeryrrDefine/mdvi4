@@ -6,6 +6,17 @@ import { tabs, changeTab } from '../core/tab/Tabs'
 import { setChangePoint } from '../core/dev.ts'
 import { device } from '@/core/game-loops/index.ts'
 import MultiTextTag from './ui/MultiTextTag.vue'
+import {onMounted, watch, ref} from 'vue'
+import type PowiainaNum from 'powiaina_num.js'
+import {resetAnimation} from '@/utils/resetAnimation.ts'
+const usedrestext = ref<null|HTMLSpanElement>(null);
+watch(()=> player.points, function(newValue: PowiainaNum, oldValue: PowiainaNum){
+  if (newValue.lt(oldValue) && usedrestext.value) {
+    let d = usedrestext.value;
+    d.innerText = "-"+format(oldValue.sub(newValue))
+    resetAnimation(d, "usedresource 2s ease-out");
+  }
+})
 </script>
 
 <template>
@@ -24,7 +35,9 @@ import MultiTextTag from './ui/MultiTextTag.vue'
         :class="player.points.gte('ee9') ? 'pts-size-small' : 'pts-size-big'"
         @dblclick="setChangePoint()"
       >
-        {{ format(player.points, 0) }}
+      <span style="position: relative;">{{ format(player.points, 0) }}<span ref="usedrestext"
+          class="usedresource" style="animation: none;">-60</span>
+      </span>
       </div>
     </div>
     <div v-if='device == "computer"' class="text-center">

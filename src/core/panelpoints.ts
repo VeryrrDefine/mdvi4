@@ -32,6 +32,6 @@ export function panelPointReset(e?: any, force = false) {
   }
 }
 export function panelPointLoop() {
-  player.panelPointPower = player.panelPointPower.add(player.panelPoints.div(1e6).mul(diff));
+  player.panelPointPower = player.panelPointPower.add(player.panelPoints.pow(3).div(1e6).mul(diff));
   player.linePoints = player.linePoints.add(player.panelPointPower.mul(diff));
 }

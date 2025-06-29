@@ -30,6 +30,9 @@ export interface Player {
   panelPoints: PowiainaNum
   panelPointPower: PowiainaNum
   unrunnedTimes: number
+  gameBoost: number
+  curChallenge: number[]
+  challenges: PowiainaNum[][]
 }
 function getInitialPlayerData(): Player {
   return {
@@ -60,6 +63,11 @@ function getInitialPlayerData(): Player {
     panelPoints: new PowiainaNum(0),
     panelPointPower: new PowiainaNum(0),
     unrunnedTimes: 0,
+    gameBoost: 0,
+    curChallenge: [0],
+    challenges: [
+      [new PowiainaNum(0)]
+    ],
   }
 }
 

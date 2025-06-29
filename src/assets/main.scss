@@ -1,6 +1,9 @@
 * {
   color: white;
 }
+html {
+  background: #000033;
+}
 body {
   background: #000033;
   margin: 0;
@@ -115,6 +118,25 @@ h3 {
   100% {
     opacity: 0;
   }
+}
+
+@keyframes usedresource {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 1em);
+  }
+}
+.usedresource {
+  opacity: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%);
+  animation: usedresource ease-out 2s;
 }
 .restext {
   font-size: 200%;
