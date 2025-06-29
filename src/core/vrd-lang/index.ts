@@ -1,9 +1,9 @@
 import { builtins } from '../../lib/vrd-lang/builtins'
-import { VBuiltin, VTypes, type VObject } from '../../lib/vrd-lang/object'
-import { objConst } from '@/lib/vrd-lang/evaluator'
+import { VBuiltin, VInteger, VTypes, type VObject } from '../../lib/vrd-lang/object'
+import { externalInfixHandlers, objConst } from '@/lib/vrd-lang/evaluator'
 import { temp } from '../temp'
 import formater from '@/lib/formater'
-import type PowiainaNum from 'powiaina_num.js'
+import PowiainaNum from 'powiaina_num.js'
 import { player } from '../saves'
 export class VBignum implements VObject {
   type(): VTypes {
@@ -17,6 +17,34 @@ export class VBignum implements VObject {
     this.value = value
   }
 }
+
+externalInfixHandlers.push({
+  left: VBignum,
+  right: VBignum,
+  handler(op, left, right) {
+    if (left instanceof VBignum) {
+      if (right instanceof VBignum) {
+        return new VBignum(left.value.add(right.value))
+      }
+
+    }
+    return new VBignum(PowiainaNum.NaN);
+  },
+})
+externalInfixHandlers.push({
+  left: VBignum,
+  right: VInteger,
+  handler(op, left, right) {
+    if (left instanceof VBignum) {
+      if (right instanceof VInteger) {
+        return new VBignum(left.value.add(right.value))
+
+      }
+
+    }
+    return new VBignum(PowiainaNum.NaN);
+  },
+})
 export function postInitVRDLang() {
   builtins.puts = new VBuiltin(function (...args: VObject[]) {
     temp.automatorresult = temp.automatorresult + args.map((x) => x.inspect()).join(' ') + '\n'

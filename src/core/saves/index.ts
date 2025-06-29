@@ -27,8 +27,10 @@ export interface Player {
   }
   curDimension: number
   linePoints: PowiainaNum
+  panelPoints: PowiainaNum
+  panelPointPower: PowiainaNum
+  unrunnedTimes: number
 }
-
 function getInitialPlayerData(): Player {
   return {
     points: new PowiainaNum(0),
@@ -55,6 +57,9 @@ function getInitialPlayerData(): Player {
     curDimension: 0,
 
     linePoints: new PowiainaNum(0),
+    panelPoints: new PowiainaNum(0),
+    panelPointPower: new PowiainaNum(0),
+    unrunnedTimes: 0,
   }
 }
 
@@ -112,6 +117,8 @@ function load(): void {
     deepCopyProps(temp_player, player)
     transformToP(player)
   }
+  player.unrunnedTimes+= Date.now()-player.lastUpdated;
+  player.lastUpdated = Date.now();
   player = reactive(player) as Player
 }
 

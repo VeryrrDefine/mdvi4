@@ -5,6 +5,7 @@ import { player } from '../core/saves'
 import { tabs, changeTab } from '../core/tab/Tabs'
 import { setChangePoint } from '../core/dev.ts'
 import { device } from '@/core/game-loops/index.ts'
+import MultiTextTag from './ui/MultiTextTag.vue'
 </script>
 
 <template>
@@ -27,7 +28,7 @@ import { device } from '@/core/game-loops/index.ts'
       </div>
     </div>
     <div v-if='device == "computer"' class="text-center">
-      <p>你有 {{format(player.points,0)}} 点数</p>
+      <p><MultiTextTag tag="youhave"/> {{format(player.points,0)}} 点数</p>
       <div>
         <Tab
           style="display: inline-block"

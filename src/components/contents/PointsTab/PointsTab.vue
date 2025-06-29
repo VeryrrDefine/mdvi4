@@ -6,6 +6,8 @@ import { upDim } from '@/core/updim'
 import { updimNeed } from '@/core/updim'
 import { player } from '@/core/saves'
 import { temp } from '@/core/temp'
+import MultiTextTag from '@/components/ui/MultiTextTag.vue'
+import CenterDiv from '@/components/ui/CenterDiv.vue'
 
 function setnocap() {
   if (import.meta.env.DEV) {
@@ -16,13 +18,13 @@ function setnocap() {
 
 <template>
   <div style="margin-top: 20px; margin-bottom: 100px">
-    <div class="div-center text-center">
+    <CenterDiv>
       <button @click="addPoints" class="asprad">获得1点数</button>
-    </div>
+    </CenterDiv>
     <p class="text-center" @dblclick="setnocap">
-      游戏有一种算法使得点数不能超过 {{ formater(getPointsCap(), 0) }}
+    <MultiTextTag tag="gamehasaalgomakepointscouldntreach" /> {{ formater(getPointsCap(), 0) }}
     </p>
-    <p class="text-center">当前维度: {{ player.curDimension }}</p>
+    <p class="text-center"><MultiTextTag tag="curdimension" />{{ player.curDimension }}</p>
     <Buyable buyable="autoclickers" />
     <Buyable buyable="accelerators" />
     <div class="div-center text-center" style="margin-top: 10px">

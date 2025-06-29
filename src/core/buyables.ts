@@ -2,6 +2,7 @@ import PowiainaNum from 'powiaina_num.js'
 import { player } from './saves'
 import { applySoftcap } from './softcaps'
 import { upgrades as lpu } from './linepoint'
+
 interface singleBuyable {
   name: string
   desc: string

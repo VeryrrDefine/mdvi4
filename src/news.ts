@@ -104,6 +104,10 @@ export default [
   {
     id: 'a26',
     text: "Use void 0 instead of undefined, because you never know is undefined defined"
+  },
+  {
+    id: "a27",
+    text: "you actually did it. what a maniac you are. congratulations. mind blown. -- someone i don't know"
   }
 ].map((news) => {
   return {

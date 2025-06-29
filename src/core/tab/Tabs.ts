@@ -38,6 +38,7 @@ import LinesTab from '@/components/contents/LinesTab/LinesTab.vue'
 import type { DefineComponent } from 'vue'
 import { player } from '../saves'
 import PanelTab from '@/components/contents/PanelTab/PanelTab.vue'
+import OfflinedTime from '@/components/contents/OfflinedTime.vue'
 export const tabs: Tabset = {
   tabs: [
     {
@@ -87,6 +88,11 @@ export const tabs: Tabset = {
           component: Visual,
           id: 2,
         },
+        {
+          text: "Offlined Time",
+          component: OfflinedTime,
+          id: 3,
+        }
       ],
     },
     {

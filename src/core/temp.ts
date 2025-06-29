@@ -5,6 +5,7 @@ function tempData() {
     automatorresult: '',
     inGalaxyIFrame: false,
     nocap: false,
+    watchGalaxyID: -1,
   }
 }
 

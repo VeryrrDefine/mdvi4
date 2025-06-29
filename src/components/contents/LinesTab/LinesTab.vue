@@ -3,22 +3,20 @@ import formater from '@/lib/formater'
 import { linePointsGain, lineReset, nextLineGain, linePointEffect, upgrades } from '@/core/linepoint'
 import { player } from '@/core/saves'
 import Upgrade from '@/components/Upgrade.vue'
+import CenterDiv from '@/components/ui/CenterDiv.vue'
 </script>
 
 <template>
   <div style="margin-top: 20px; margin-bottom: 100px">
-    <div class="text-center div-center">
+    <CenterDiv>
       <p>你有 {{ formater(player.linePoints) }} 线数</p>
       <button class="resetbutton" :disabled="!player.points.gte(100000)" @click="lineReset">
         重置点数, Autoclickers and accelerators, 获得 {{ formater(linePointsGain()) }} 线数
         <br />
         下一个在 {{ formater(nextLineGain()) }} <br /><br />需要 {{ formater(100000) }} 点数
       </button>
-    </div>
-
-    <div class="text-center div-center">
       <p>你的线数使自动获取的点数乘以 {{ formater(linePointEffect()) }}</p>
-    </div>
+    </CenterDiv>
 
     <div>
       <Upgrade :upgrade="upgrades[0]" currency="line points" />

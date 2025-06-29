@@ -2,12 +2,14 @@ import PowiainaNum from 'powiaina_num.js'
 import { player, type Player } from '../saves'
 import { getPointsCap, getPointsGainPS } from '../game'
 import { temp } from '../temp'
+import {panelPointLoop} from '../panelpoints'
 let diff = 0
 export function mainLoop() {
   diff = (Date.now() - player.lastUpdated) / 1000
   player.points = player.points
     .add(getPointsGainPS().mul(diff))
     .min(temp.nocap ? Infinity : getPointsCap())
+  panelPointLoop()
   player.lastUpdated = Date.now()
 }
 export { diff }

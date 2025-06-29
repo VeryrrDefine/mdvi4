@@ -21,7 +21,7 @@ function runcode() {
   // result.value = result.value+"Code parsed to AST.\n"
 
   const env = new VEnvironment()
-  const evaluated = evalProgram(program.statements, env)
+  evalProgram(program.statements, env)
   //result.value = result.value+"AST evaluated.\n"
   //result.value = result.value+"Result: "+evaluated.inspect()+"\n"
 }
@@ -39,5 +39,6 @@ function runcode() {
 textarea {
   width: 300px;
   height: 300px;
+  background: black;
 }
 </style>
