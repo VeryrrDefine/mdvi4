@@ -26,9 +26,8 @@ externalInfixHandlers.push({
       if (right instanceof VBignum) {
         return new VBignum(left.value.add(right.value))
       }
-
     }
-    return new VBignum(PowiainaNum.NaN);
+    return new VBignum(PowiainaNum.NaN)
   },
 })
 externalInfixHandlers.push({
@@ -38,11 +37,9 @@ externalInfixHandlers.push({
     if (left instanceof VBignum) {
       if (right instanceof VInteger) {
         return new VBignum(left.value.add(right.value))
-
       }
-
     }
-    return new VBignum(PowiainaNum.NaN);
+    return new VBignum(PowiainaNum.NaN)
   },
 })
 export function postInitVRDLang() {

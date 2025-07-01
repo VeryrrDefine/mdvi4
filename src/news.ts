@@ -75,40 +75,40 @@ export default [
   },
   {
     id: 'a19',
-    text: "太过于不平衡，-2"
+    text: '太过于不平衡，-2',
   },
   {
     id: 'a20',
-    text: `les <$bx>s et les ❓s`
+    text: `les <$bx>s et les ❓s`,
   },
   {
     id: 'a21',
-    text: '你奶奶了个三角篓子的，❓❓这个❓❓， 扑腾一下子直接❓❓❓❓，把❓❓❓❓❓❓❓❓❓❓❓裤衩子都给崩飞了，可以说❓了个五马分尸，万朵桃花开呀'
+    text: '你奶奶了个三角篓子的，❓❓这个❓❓， 扑腾一下子直接❓❓❓❓，把❓❓❓❓❓❓❓❓❓❓❓裤衩子都给崩飞了，可以说❓了个五马分尸，万朵桃花开呀',
   },
   {
     id: 'a22',
-    text: "Click here to get here"
+    text: 'Click here to get here',
   },
   {
     id: 'a23',
-    text: "src/news.ts [+]             94,12          Bot"
+    text: 'src/news.ts [+]             94,12          Bot',
   },
   {
     id: 'a24',
-    text: "衫脚福闻"
+    text: '衫脚福闻',
   },
   {
     id: 'a25',
-    text: "Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: "
+    text: "Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: Today's news: ",
   },
   {
     id: 'a26',
-    text: "Use void 0 instead of undefined, because you never know is undefined defined"
+    text: 'Use void 0 instead of undefined, because you never know is undefined defined',
   },
   {
-    id: "a27",
-    text: "you actually did it. what a maniac you are. congratulations. mind blown. -- someone i don't know"
-  }
+    id: 'a27',
+    text: "you actually did it. what a maniac you are. congratulations. mind blown. -- someone i don't know",
+  },
 ].map((news) => {
   return {
     id: news.id,

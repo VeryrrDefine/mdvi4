@@ -9,7 +9,8 @@ export enum VTypes {
   ERROR = 'ERROR',
   FUNCTION_OBJ = 'FUNCTION',
   STRING_OBJ = 'STRING',
-  BUILTIN_OBJ = 'BUILTIN',
+    BUILTIN_OBJ = 'BUILTIN',
+    ARRAY_OBJ = "ARRAY"
 }
 
 export interface VObject {
@@ -102,7 +103,18 @@ export class VFunction implements VObject {
     this.env = env
   }
 }
-
+export class VArray implements VObject {
+  elements: VObject[]
+  type() {
+    return VTypes.ARRAY_OBJ
+  }
+  inspect(): string {
+    return "["+this.elements.map((x)=>x.inspect()).join(',')+"]"
+  }
+  constructor(elements: VObject[]) {
+    this.elements = elements;
+  }
+}
 export class VBuiltin implements VObject {
   type(): VTypes {
     return VTypes.BUILTIN_OBJ

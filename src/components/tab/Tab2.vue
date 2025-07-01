@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 const props = defineProps(['content'])
-import { device } from '@/core/game-loops';
+import { device } from '@/core/game-loops'
 </script>
 
 <style scoped lang="scss">
@@ -18,7 +18,6 @@ div {
   margin: 6px;
 }
 .mobile {
-
   height: calc(100% - 1px);
   display: flex;
   flex-direction: column;

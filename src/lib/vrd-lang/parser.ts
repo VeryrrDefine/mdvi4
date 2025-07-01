@@ -1,3 +1,4 @@
+import {temp} from '@/core/temp'
 import {
   LetStatement,
   BlockStatement,
@@ -13,6 +14,9 @@ import {
   FunctionLiteral,
   CallExpression,
   StringLiteral,
+  ArrayLiteral,
+  GetPropertiesExpression,
+  BlEx,
 } from './ast'
 import type { Statement, Expression } from './ast'
 import { Lexer } from './lexer'
@@ -25,8 +29,12 @@ const SUM = 3
 const PRODUCT = 4
 const PREFIX = 5
 const CALL = 6
-
-const DEBUG = 0
+const INDEX = 7
+const DEBUG = true
+const printtotemp = function (...a:any){
+ temp.automatorresult+=a.toString()
+  temp.automatorresult+="\n"
+}
 const precedences = new Map<TokenType, number>()
 precedences.set(TokenType.EQ, EQUALS)
 precedences.set(TokenType.NEQ, EQUALS)
@@ -39,6 +47,7 @@ precedences.set(TokenType.MINUS, SUM)
 precedences.set(TokenType.ASTERISK, PRODUCT)
 precedences.set(TokenType.SLASH, PRODUCT)
 precedences.set(TokenType.LPAREN, CALL)
+precedences.set(TokenType.LBRACKET, INDEX)
 type prefixParseFn = () => Expression | null
 type infixParseFn = (fn: Expression) => Expression | null
 class PlhoEx implements Expression {
@@ -72,12 +81,14 @@ export class Parser {
     this.prefixParseFns.set(TokenType.BANG, this.parsePrefixExpression.bind(this))
     this.prefixParseFns.set(TokenType.LPAREN, this.parseGroupedExpression.bind(this))
     this.prefixParseFns.set(TokenType.IF, this.parseIfExpression.bind(this))
+    this.prefixParseFns.set(TokenType.LBRACKET, this.parseArrayLiteral.bind(this))
     this.prefixParseFns.set(TokenType.FUNCTION, this.parseFunctionLiteral.bind(this))
 
     precedences.forEach((value, key) => {
-      if (value != CALL) this.infixParseFns.set(key, this.parseInfixExpression.bind(this))
+      if (value <= CALL) this.infixParseFns.set(key, this.parseInfixExpression.bind(this))
     })
     this.infixParseFns.set(TokenType.LPAREN, this.parseCallExpression.bind(this))
+    this.infixParseFns.set(TokenType.LBRACKET, this.parseGetPropertyExpression.bind(this))
   }
 
   nextToken() {
@@ -98,7 +109,6 @@ export class Parser {
     return program
   }
   parseExpression(precedence: number): Expression | null {
-    DEBUG ? console.debug(this.curToken.literal, this.peekToken.literal) : 0
     const prefix = this.prefixParseFns.get(this.curToken.type)
     if (!prefix) return null
     let leftExp = prefix()
@@ -107,7 +117,6 @@ export class Parser {
 
       if (!infix) return leftExp
 
-      DEBUG ? console.debug(this.curToken.literal, this.peekToken.literal) : 0
       this.nextToken()
       if (!leftExp) return null
       leftExp = infix(leftExp)
@@ -116,13 +125,22 @@ export class Parser {
   }
   parseCallExpression(left: Expression): Expression {
     const exp = new CallExpression(this.curToken, left, [])
-    exp.args = this.parseCallArguments() ?? []
+    exp.args = this.parseExpressionList() ?? []
 
     return exp
   }
-  parseCallArguments(): Expression[] | null {
+  parseGetPropertyExpression(left: Expression): Expression|null {
+    const exp = new GetPropertiesExpression(this.curToken, left, new BlEx(this.curToken))
+    this.nextToken()
+    const exp2 = this.parseExpression(LOWEST);
+    if (!exp2) return null;
+    exp.prop = exp2;
+    if (!this.expectPeek(TokenType.RBRACKET) ) return null;
+    return exp
+  }
+  parseExpressionList(end=TokenType.RPAREN): Expression[] | null {
     const args: Expression[] = []
-    if (this.peekTokenIs(TokenType.RPAREN)) {
+    if (this.peekTokenIs(end)) {
       this.nextToken()
       return args
     }
@@ -135,7 +153,7 @@ export class Parser {
       t = this.parseExpression(LOWEST)
       if (t) args.push(t)
     }
-    if (!this.expectPeek(TokenType.RPAREN)) return null
+    if (!this.expectPeek(end)) return null
     return args
   }
   parseFunctionLiteral(): Expression | null {
@@ -168,6 +186,10 @@ export class Parser {
     }
     if (!this.expectPeek(TokenType.RPAREN)) return null
     return identifiers
+  }
+
+  parseArrayLiteral() {
+    return new ArrayLiteral(this.curToken, this.parseExpressionList(TokenType.RBRACKET) ?? [])
   }
   parseIfExpression(): Expression | null {
     const expression = new IfExpression(
@@ -310,6 +332,11 @@ export class Parser {
   expectPeek(token: TokenType) {
     if (this.peekTokenIs(token)) {
       this.nextToken()
+      return true
+    } else return false
+  }
+  expectCur(token: TokenType) {
+    if (this.curTokenIs(token)) {
       return true
     } else return false
   }

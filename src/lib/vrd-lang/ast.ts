@@ -247,3 +247,33 @@ export class CallExpression implements Expression {
     this.args = args
   }
 }
+export class GetPropertiesExpression implements Expression {
+
+  tokenLiteral(): string {
+    return this.token.literal
+  }
+  token: Token
+  left: Expression
+  prop: Expression
+  getString(): string {
+    return `(${this.left.getString()}[${this.prop.getString()}])`
+  }
+  constructor(token: Token, fn: Expression, args: Expression) {
+    this.token = token
+    this.left = fn
+    this.prop = args
+  }
+}
+export class ArrayLiteral implements Expression {
+  token: Token
+  elements: Expression[]
+  tokenLiteral() {return this.token.literal}
+  getString(): string {
+    return "["+this.elements.map((x)=>x.getString()).join(",")+"]"
+  }
+
+  constructor(token: Token, elements: Expression[]) {
+    this.token = token
+    this.elements = elements;
+  }
+}

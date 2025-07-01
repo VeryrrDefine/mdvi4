@@ -14,7 +14,7 @@ import { device } from '@/core/game-loops/index.ts'
     <div class="tab-1" :class="device">
       <template v-for="tab in curTab().subtabs" :key="tab.id">
         <SubTab
-          :style="{'display': device=='computer' ? 'inline-block' : 'block'}"
+          :style="{ display: device == 'computer' ? 'inline-block' : 'block' }"
           :content="tab.text"
           v-if="fnchoice(tab.unlocked, true)"
           @click="changeSubtab(player.tab, tab.id, curTab().id)"
@@ -38,8 +38,7 @@ import { device } from '@/core/game-loops/index.ts'
   flex-wrap: wrap;
   overflow: auto;
 }
-.tab-1.computer{
+.tab-1.computer {
   text-align: center;
 }
-
 </style>

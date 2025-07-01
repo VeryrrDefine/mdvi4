@@ -1,6 +1,6 @@
 import PowiainaNum from 'powiaina_num.js'
 import { player } from './saves'
-import {Upgrade} from './upgrade'
+import { Upgrade } from './upgrade'
 import format from '@/lib/formater'
 export function linePointsGain() {
   let gain = player.points.root(5).div(10)
@@ -28,7 +28,7 @@ export function linePointEffect() {
 }
 
 export const upgrades = [
-  new class extends Upgrade {
+  new (class extends Upgrade {
     set status(x: boolean) {
       player.upgrades.linepoint1 = x
     }
@@ -36,7 +36,7 @@ export const upgrades = [
       return player.upgrades.linepoint1
     }
     description(): string {
-      return "每一次重置都会从120点数开始"
+      return '每一次重置都会从120点数开始'
     }
     cost(): PowiainaNum {
       return new PowiainaNum(8)
@@ -52,8 +52,8 @@ export const upgrades = [
       }
       return false
     }
-  },
-  new class extends Upgrade {
+  })(),
+  new (class extends Upgrade {
     set status(x: boolean) {
       player.upgrades.linepoint2 = x
     }
@@ -61,7 +61,7 @@ export const upgrades = [
       return player.upgrades.linepoint2
     }
     description(): string {
-      return "每个Accelerators给予1免费的Autoclickers（购买此升级消耗8线数）"
+      return '每个Accelerators给予1免费的Autoclickers（购买此升级消耗8线数）'
     }
     cost(): PowiainaNum {
       return new PowiainaNum(15)
@@ -77,8 +77,8 @@ export const upgrades = [
       }
       return false
     }
-  },
-  new class extends Upgrade {
+  })(),
+  new (class extends Upgrade {
     set status(x: boolean) {
       player.upgrades.linepoint3 = x
     }
@@ -86,7 +86,7 @@ export const upgrades = [
       return player.upgrades.linepoint3
     }
     description(): string {
-      return `点数上限从${format(1000000,0)}到${format(10000000,0)}(购买此升级消耗8线数)`
+      return `点数上限从${format(1000000, 0)}到${format(10000000, 0)}(购买此升级消耗8线数)`
     }
     cost(): PowiainaNum {
       return new PowiainaNum(20)
@@ -102,8 +102,8 @@ export const upgrades = [
       }
       return false
     }
-  },
-  new class extends Upgrade {
+  })(),
+  new (class extends Upgrade {
     set status(x: boolean) {
       player.upgrades.linepoint4 = x
     }
@@ -126,10 +126,9 @@ export const upgrades = [
         return true
       }
       return false
-
     }
-  },
-  new class extends Upgrade {
+  })(),
+  new (class extends Upgrade {
     set status(x: boolean) {
       player.upgrades.linepoint5 = x
     }
@@ -152,10 +151,9 @@ export const upgrades = [
         return true
       }
       return false
-
     }
-  },
-  new class extends Upgrade {
+  })(),
+  new (class extends Upgrade {
     set status(x: boolean) {
       player.upgrades.linepoint6 = x
     }
@@ -178,7 +176,6 @@ export const upgrades = [
         return true
       }
       return false
-
     }
-  }
+  })(),
 ]

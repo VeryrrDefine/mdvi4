@@ -66,7 +66,6 @@ export const tabs: Tabset = {
             return player.curDimension >= 2
           },
         },
-
       ],
     },
     {
@@ -89,10 +88,10 @@ export const tabs: Tabset = {
           id: 2,
         },
         {
-          text: "Offlined Time",
+          text: 'Offlined Time',
           component: OfflinedTime,
           id: 3,
-        }
+        },
       ],
     },
     {

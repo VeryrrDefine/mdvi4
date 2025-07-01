@@ -5,9 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import { device } from '@/core/game-loops';
-  const props = defineProps(['content'])
-
+import { device } from '@/core/game-loops'
+const props = defineProps(['content'])
 </script>
 
 <style scoped>
@@ -19,7 +18,6 @@ div {
   margin: 6px;
 }
 .mobile {
-
   width: calc(33% - 0.5px);
   height: calc(100% - 1px);
   display: flex;

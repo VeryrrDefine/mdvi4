@@ -222,7 +222,7 @@ declare module 'powiaina_num.js' {
 
     toNumber(): number
 
-    toString(type: undefined|1): string
+    toString(type: undefined | 1): string
     operator(i: number, j: number, k: number): number
     operator(i: number, j: number, k: number, val: number): void
     overflow(

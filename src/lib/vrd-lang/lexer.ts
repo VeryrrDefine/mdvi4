@@ -18,6 +18,8 @@ export class Lexer {
     '-': TokenType.MINUS,
     '*': TokenType.ASTERISK,
     '/': TokenType.SLASH,
+    '[': TokenType.LBRACKET,
+    ']': TokenType.RBRACKET,
   }
   static doubleCharMap: { [key: string]: [string, TokenType, TokenType] } = {
     '=': ['=', TokenType.EQ, TokenType.ASSIGN],

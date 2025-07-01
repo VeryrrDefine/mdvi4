@@ -4,7 +4,7 @@ import { mainLoop } from './game-loops'
 import { load, save } from './saves'
 import { initTemp } from './temp'
 import { postInitVRDLang } from './vrd-lang'
-import {watchListeners} from './window-message-watcher'
+import { watchListeners } from './window-message-watcher'
 
 export function init() {
   load()

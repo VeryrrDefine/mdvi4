@@ -8,12 +8,6 @@ import { player } from '@/core/saves'
 import { temp } from '@/core/temp'
 import MultiTextTag from '@/components/ui/MultiTextTag.vue'
 import CenterDiv from '@/components/ui/CenterDiv.vue'
-
-function setnocap() {
-  if (import.meta.env.DEV) {
-    temp.nocap = true
-  }
-}
 </script>
 
 <template>
@@ -21,8 +15,8 @@ function setnocap() {
     <CenterDiv>
       <button @click="addPoints" class="asprad">获得1点数</button>
     </CenterDiv>
-    <p class="text-center" @dblclick="setnocap">
-    <MultiTextTag tag="gamehasaalgomakepointscouldntreach" /> {{ formater(getPointsCap(), 0) }}
+    <p class="text-center">
+      <MultiTextTag tag="gamehasaalgomakepointscouldntreach" /> {{ formater(getPointsCap(), 0) }}
     </p>
     <p class="text-center"><MultiTextTag tag="curdimension" />{{ player.curDimension }}</p>
     <Buyable buyable="autoclickers" />

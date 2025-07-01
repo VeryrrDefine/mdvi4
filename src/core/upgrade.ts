@@ -1,9 +1,7 @@
-import PowiainaNum from "powiaina_num.js";
+import PowiainaNum from 'powiaina_num.js'
 
 export abstract class Upgrade {
-  set status(x: boolean) {
-
-  }
+  set status(x: boolean) {}
   get status(): boolean {
     return false
   }
@@ -21,18 +19,14 @@ export abstract class Upgrade {
   }
 
   description(): string {
-    return "Upgrade description"
+    return 'Upgrade description'
   }
 
-  effect(): any {
-  }
+  effect(): any {}
 
-  effectDesc(effect: any): string{
-    return ""
+  effectDesc(effect: any): string {
+    return ''
   }
-
 }
 
-export const Upgrade1 = new class extends Upgrade {
-
-}
+export const Upgrade1 = new (class extends Upgrade {})()

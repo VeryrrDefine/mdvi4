@@ -1,17 +1,20 @@
 <script lang="ts" setup>
-
 const changelogs = [
   {
+    version: '4.0.2-beta.3',
+    log: 'feat: automator array update'
+  },
+  {
     version: '4.0.2-beta.2',
-    log: "feat: game boost"
+    log: 'feat: game boost',
   },
   {
     version: '4.0.2-beta.1',
-    log: "feat: panel reset & power undone: offlinedtime"
+    log: 'feat: panel reset & power undone: offlinedtime',
   },
   {
     version: '4.0.1',
-    log: "feat: upgrades, panel undone: galaxy click cloud save"
+    log: 'feat: upgrades, panel undone: galaxy click cloud save',
   },
   {
     version: '4.0.0.2',

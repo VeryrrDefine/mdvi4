@@ -2,20 +2,20 @@ import PowiainaNum from 'powiaina_num.js'
 import { player, type Player } from '../saves'
 import { getPointsCap, getPointsGainPS } from '../game'
 import { temp } from '../temp'
-import {panelPointLoop} from '../panelpoints'
+import { panelPointLoop } from '../panelpoints'
 let diff = 0
-let diff2 = 0;
+let diff2 = 0
 export function mainLoop() {
   diff2 = (Date.now() - player.lastUpdated) / 1000
 
-  diff = diff2;
+  diff = diff2
   if (player.gameBoost > 0) {
-    if (player.gameBoost<diff2) {
-      diff+=player.gameBoost;
-      player.gameBoost = 0;
+    if (player.gameBoost < diff2) {
+      diff += player.gameBoost
+      player.gameBoost = 0
     } else {
-      diff*=2;
-      player.gameBoost-=diff2;
+      diff *= 2
+      player.gameBoost -= diff2
     }
   }
   player.points = player.points
@@ -31,9 +31,7 @@ function isMobile() {
     const ua = (navigator as any).userAgentData
     return ua.mobile
   } else {
-    return /Android|webOS|iPhone||iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
-    )
+    return /Android|webOS|iPhone||iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
   }
 }
 export const device = isMobile() ? 'mobile' : 'computer'

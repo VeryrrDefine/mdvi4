@@ -25,6 +25,9 @@ export enum TokenType {
   LBRACE,
   RBRACE,
 
+  LBRACKET,
+  RBRACKET,
+
   FUNCTION,
   LET,
   RETURN,

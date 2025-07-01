@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import formater from '@/lib/formater'
-import { linePointsGain, lineReset, nextLineGain, linePointEffect, upgrades } from '@/core/linepoint'
+import {
+  linePointsGain,
+  lineReset,
+  nextLineGain,
+  linePointEffect,
+  upgrades,
+} from '@/core/linepoint'
 import { player } from '@/core/saves'
 import Upgrade from '@/components/Upgrade.vue'
 import CenterDiv from '@/components/ui/CenterDiv.vue'

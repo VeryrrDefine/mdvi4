@@ -1,7 +1,7 @@
 import PowiainaNum from 'powiaina_num.js'
 import { buyables } from './buyables'
 import { player } from './saves/index'
-import { linePointEffect, upgrades as lpu} from './linepoint'
+import { linePointEffect, upgrades as lpu } from './linepoint'
 
 export function addPoints() {
   player.points = player.points.add(1)

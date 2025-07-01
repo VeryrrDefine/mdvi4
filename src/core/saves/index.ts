@@ -65,9 +65,7 @@ function getInitialPlayerData(): Player {
     unrunnedTimes: 0,
     gameBoost: 0,
     curChallenge: [0],
-    challenges: [
-      [new PowiainaNum(0)]
-    ],
+    challenges: [[new PowiainaNum(0)]],
   }
 }
 
@@ -125,8 +123,8 @@ function load(): void {
     deepCopyProps(temp_player, player)
     transformToP(player)
   }
-  player.unrunnedTimes+= Date.now()-player.lastUpdated;
-  player.lastUpdated = Date.now();
+  player.unrunnedTimes += Date.now() - player.lastUpdated
+  player.lastUpdated = Date.now()
   player = reactive(player) as Player
 }
 

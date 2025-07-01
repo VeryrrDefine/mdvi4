@@ -1,9 +1,11 @@
 import {
+  ArrayLiteral,
   BlockStatement,
   BoolLiteral,
   CallExpression,
   ExpressionStatement,
   FunctionLiteral,
+  GetPropertiesExpression,
   Identifier,
   IfExpression,
   InfixExpression,
@@ -25,6 +27,7 @@ import {
   VString,
   VTypes,
   VBuiltin,
+  VArray,
 } from './object'
 import type { VObject } from './object'
 import { builtins } from './builtins'
@@ -99,6 +102,21 @@ export function VEval(node: ASTNode, env: VEnvironment): VObject {
       body = node.body
       const temp1 = new VFunction(params, body, env)
       return temp1
+    case node instanceof ArrayLiteral:
+      const elements = evalExpressions(node.elements, env);
+
+      if (elements.length === 1 && isError(elements[0])) return elements[0]
+
+      return new VArray(elements);
+
+    case node instanceof GetPropertiesExpression:
+      const leftObj = VEval(node.left, env)
+      if (isError(leftObj)) return leftObj
+      const ind = VEval(node.prop, env)
+
+      if (isError(ind)) return ind
+
+      return applyGetProperties(leftObj,ind)
     case node instanceof CallExpression:
       const functionObj = VEval(node.fn, env)
       if (isError(functionObj)) return functionObj
@@ -110,6 +128,16 @@ export function VEval(node: ASTNode, env: VEnvironment): VObject {
       return applyFunction(functionObj, args)
   }
   return objConst.NULL
+}
+function applyGetProperties(left: VObject, ind: VObject) {
+  switch (true) {
+    case left instanceof VArray:
+      if (ind instanceof VInteger) {
+        return left.elements[ind.value] ?? newError("property not exists")
+      }
+    default:
+      return newError("Cannot get property")
+  }
 }
 function applyFunction(fn: VObject, args: VObject[]) {
   switch (true) {
