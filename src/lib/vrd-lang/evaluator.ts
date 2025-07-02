@@ -15,6 +15,7 @@ import {
   Program,
   ReturnStatement,
   StringLiteral,
+  WhenExpression,
 } from './ast'
 import type { ASTNode, Expression, Statement } from './ast'
 import {
@@ -103,11 +104,11 @@ export function VEval(node: ASTNode, env: VEnvironment): VObject {
       const temp1 = new VFunction(params, body, env)
       return temp1
     case node instanceof ArrayLiteral:
-      const elements = evalExpressions(node.elements, env);
+      const elements = evalExpressions(node.elements, env)
 
       if (elements.length === 1 && isError(elements[0])) return elements[0]
 
-      return new VArray(elements);
+      return new VArray(elements)
 
     case node instanceof GetPropertiesExpression:
       const leftObj = VEval(node.left, env)
@@ -116,7 +117,7 @@ export function VEval(node: ASTNode, env: VEnvironment): VObject {
 
       if (isError(ind)) return ind
 
-      return applyGetProperties(leftObj,ind)
+      return applyGetProperties(leftObj, ind)
     case node instanceof CallExpression:
       const functionObj = VEval(node.fn, env)
       if (isError(functionObj)) return functionObj
@@ -126,6 +127,8 @@ export function VEval(node: ASTNode, env: VEnvironment): VObject {
       if (args.length === 1 && isError(args[0])) return args[0]
 
       return applyFunction(functionObj, args)
+    case node instanceof WhenExpression:
+      console.log(node)
   }
   return objConst.NULL
 }
@@ -133,10 +136,10 @@ function applyGetProperties(left: VObject, ind: VObject) {
   switch (true) {
     case left instanceof VArray:
       if (ind instanceof VInteger) {
-        return left.elements[ind.value] ?? newError("property not exists")
+        return left.elements[ind.value] ?? newError('property not exists')
       }
     default:
-      return newError("Cannot get property")
+      return newError('Cannot get property')
   }
 }
 function applyFunction(fn: VObject, args: VObject[]) {
@@ -210,6 +213,16 @@ export function evalProgram(stmts: Statement[], env: VEnvironment): VObject {
   return result
 }
 
+export function* evalProgramY(stmts: Statement[], env: VEnvironment) {
+  let result: VObject = objConst.NULL
+  for (const statement of stmts) {
+    result = VEval(statement, env)
+    if (result instanceof VReturnValue) return result.value
+    if (result instanceof VError) return result
+    yield result
+  }
+  return result
+}
 export function evalBlockStatements(stmts: Statement[], env: VEnvironment): VObject {
   let result: VObject = objConst.NULL
   for (const statement of stmts) {

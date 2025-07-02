@@ -5,6 +5,7 @@ import MultiTextTag from '../ui/MultiTextTag.vue'
 import { resetAnimation } from '@/utils/resetAnimation'
 import { player } from '@/core/saves'
 import { onMounted, onUnmounted, ref } from 'vue'
+import { temp } from '@/core/temp'
 const usedrestext = ref<null | HTMLSpanElement>(null)
 var interval = 0
 function useOffline() {
@@ -40,6 +41,8 @@ function resetGameBoost() {
       <MultiTextTag tag="offlinedtime" />
     </p>
     <button @click="useOffline">Use 60 seconds of offlined times for a 1 min x2 boost</button>
+    <button @click="temp.simulatingTime = true">Simulate rest times</button>
+    <button @click="temp.simulatingTime = false">Stop simulate</button>
     <p @dblclick="resetGameBoost">Game is boosting in {{ formater(player.gameBoost) }} seconds</p>
   </CenterDiv>
 </template>

@@ -1,8 +1,12 @@
 <script lang="ts" setup>
 const changelogs = [
   {
+    version: '4.0.2',
+    log: 'feat: challenges',
+  },
+  {
     version: '4.0.2-beta.3',
-    log: 'feat: automator array update'
+    log: 'feat: automator array update',
   },
   {
     version: '4.0.2-beta.2',

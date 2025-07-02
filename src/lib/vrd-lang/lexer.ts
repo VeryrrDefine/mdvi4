@@ -54,7 +54,7 @@ export class Lexer {
   nextToken(): Token {
     this.skipWhiteSpace()
 
-    if (this.ch == '&' && this.peekChar() == '/') {
+    if (this.ch == '/' && this.peekChar() == '/') {
       while (!(this.peekChar() == '\n' || this.peekChar() == '\r' || this.peekChar() == ''))
         this.readPosition++
       return this.nextToken()

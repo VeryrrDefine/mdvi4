@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { ppChals } from '@/core/panelpoints'
+import ChallengeSingle from './ChallengeSingle.vue'
+
 // code...
 </script>
 
 <template>
-  <!-- code... -->
+  <div>
+    <ChallengeSingle :chal="ppChals[0]" />
+    <ChallengeSingle :chal="ppChals[1]" />
+  </div>
 </template>
 
 <style scoped>

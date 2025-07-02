@@ -7,7 +7,7 @@ import { VEnvironment } from './lib/vrd-lang/evaluator'
 import Modal from './utils/Modal'
 import formater from './lib/formater'
 import { temp } from './core/temp'
-import {makeReadonly} from './utils/readonly'
+import { makeReadonly } from './utils/readonly'
 
 PowiainaNum.prototype.rec = PowiainaNum.prototype.reciprocate = function () {
   if (this.isNaN() || this.eq(PowiainaNum.ZERO)) return PowiainaNum.NaN.clone()

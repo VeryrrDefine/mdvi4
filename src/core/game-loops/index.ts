@@ -1,6 +1,6 @@
 import PowiainaNum from 'powiaina_num.js'
 import { player, type Player } from '../saves'
-import { getPointsCap, getPointsGainPS } from '../game'
+import { getPointsCap, getPointsGainPS, secondsRunPerTick } from '../game'
 import { temp } from '../temp'
 import { panelPointLoop } from '../panelpoints'
 let diff = 0
@@ -9,7 +9,7 @@ export function mainLoop() {
   diff2 = (Date.now() - player.lastUpdated) / 1000
 
   diff = diff2
-  if (player.gameBoost > 0) {
+  if (player.gameBoost > 0 && !temp.simulatingTime) {
     if (player.gameBoost < diff2) {
       diff += player.gameBoost
       player.gameBoost = 0
@@ -17,6 +17,18 @@ export function mainLoop() {
       diff *= 2
       player.gameBoost -= diff2
     }
+  }
+
+  if (temp.simulatingTime && player.unrunnedTimes > 0) {
+    if (player.unrunnedTimes <= secondsRunPerTick * 1000) {
+      diff += player.unrunnedTimes / 1000
+      player.unrunnedTimes = 0
+    } else {
+      diff += 10
+      player.unrunnedTimes -= 10000
+    }
+  } else {
+    temp.simulatingTime = false
   }
   player.points = player.points
     .add(getPointsGainPS().mul(diff))

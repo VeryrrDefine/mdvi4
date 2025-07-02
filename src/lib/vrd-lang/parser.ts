@@ -1,4 +1,4 @@
-import {temp} from '@/core/temp'
+import { temp } from '@/core/temp'
 import {
   LetStatement,
   BlockStatement,
@@ -18,7 +18,7 @@ import {
   GetPropertiesExpression,
   BlEx,
 } from './ast'
-import type { Statement, Expression } from './ast'
+import { type Statement, type Expression, WhenExpression } from './ast'
 import { Lexer } from './lexer'
 import { Token, TokenType } from './token'
 
@@ -31,9 +31,9 @@ const PREFIX = 5
 const CALL = 6
 const INDEX = 7
 const DEBUG = true
-const printtotemp = function (...a:any){
- temp.automatorresult+=a.toString()
-  temp.automatorresult+="\n"
+const printtotemp = function (...a: any) {
+  temp.automatorresult += a.toString()
+  temp.automatorresult += '\n'
 }
 const precedences = new Map<TokenType, number>()
 precedences.set(TokenType.EQ, EQUALS)
@@ -75,6 +75,7 @@ export class Parser {
     this.prefixParseFns.set(TokenType.IDENT, this.parseIdentifier.bind(this))
     this.prefixParseFns.set(TokenType.INT, this.parseIntegerLiteral.bind(this))
     this.prefixParseFns.set(TokenType.STRING, this.parseString.bind(this))
+    this.prefixParseFns.set(TokenType.WHEN, this.parseWhenExpression.bind(this))
     this.prefixParseFns.set(TokenType.TRUE, this.parseBooleanLiteral.bind(this))
     this.prefixParseFns.set(TokenType.FALSE, this.parseBooleanLiteral.bind(this))
     this.prefixParseFns.set(TokenType.MINUS, this.parsePrefixExpression.bind(this))
@@ -126,19 +127,18 @@ export class Parser {
   parseCallExpression(left: Expression): Expression {
     const exp = new CallExpression(this.curToken, left, [])
     exp.args = this.parseExpressionList() ?? []
-
     return exp
   }
-  parseGetPropertyExpression(left: Expression): Expression|null {
+  parseGetPropertyExpression(left: Expression): Expression | null {
     const exp = new GetPropertiesExpression(this.curToken, left, new BlEx(this.curToken))
     this.nextToken()
-    const exp2 = this.parseExpression(LOWEST);
-    if (!exp2) return null;
-    exp.prop = exp2;
-    if (!this.expectPeek(TokenType.RBRACKET) ) return null;
+    const exp2 = this.parseExpression(LOWEST)
+    if (!exp2) return null
+    exp.prop = exp2
+    if (!this.expectPeek(TokenType.RBRACKET)) return null
     return exp
   }
-  parseExpressionList(end=TokenType.RPAREN): Expression[] | null {
+  parseExpressionList(end = TokenType.RPAREN): Expression[] | null {
     const args: Expression[] = []
     if (this.peekTokenIs(end)) {
       this.nextToken()
@@ -328,6 +328,27 @@ export class Parser {
     if (this.peekTokenIs(TokenType.SEMICOLON)) this.nextToken()
 
     return statement
+  }
+  parseWhenExpression(): WhenExpression | null {
+    // when [EXPRESSION] {[STATEMENTS]} once
+    // if this statement has evaled, it'll push to the event lists (temp)
+    const expression = new WhenExpression(
+      this.curToken,
+      new PlhoEx(),
+      new BlockStatement(new Token()),
+    )
+    this.nextToken()
+    let check_expression = this.parseExpression(LOWEST)
+    if (!check_expression) return null
+    expression.cond = check_expression
+    if (!this.expectPeek(TokenType.LBRACE)) return null
+
+    expression.body = this.parseBlockStatement()
+    if (this.peekTokenIs(TokenType.ONCE)) {
+      expression.eventonce = true
+      this.nextToken()
+    }
+    return expression
   }
   expectPeek(token: TokenType) {
     if (this.peekTokenIs(token)) {

@@ -4,7 +4,7 @@ import {
   linePointsGain,
   lineReset,
   nextLineGain,
-  linePointEffect,
+  linePointsEffect,
   upgrades,
 } from '@/core/linepoint'
 import { player } from '@/core/saves'
@@ -21,7 +21,7 @@ import CenterDiv from '@/components/ui/CenterDiv.vue'
         <br />
         下一个在 {{ formater(nextLineGain()) }} <br /><br />需要 {{ formater(100000) }} 点数
       </button>
-      <p>你的线数使自动获取的点数乘以 {{ formater(linePointEffect()) }}</p>
+      <p>你的线数使自动获取的点数乘以 {{ formater(linePointsEffect()) }}</p>
     </CenterDiv>
 
     <div>

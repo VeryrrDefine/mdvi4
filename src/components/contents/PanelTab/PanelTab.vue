@@ -4,7 +4,7 @@ import { player } from '@/core/saves'
 import MultiTextTag from '@/components/ui/MultiTextTag.vue'
 import { getNextPanelPointGain, getPanelPointGain, panelPointReset } from '@/core/panelpoints'
 import CenterDiv from '@/components/ui/CenterDiv.vue'
-import Challenges from './Challenges.vue';
+import Challenges from './Challenges.vue'
 </script>
 <template>
   <div style="margin-top: 20px; margin-bottom: 100px">
@@ -31,7 +31,7 @@ import Challenges from './Challenges.vue';
       <span class="restext">{{ formater(player.panelPointPower) }}</span> line points per second
     </CenterDiv>
     <CenterDiv v-if="player.panelPoints.lt(2)"> Get 2 panel points to unlock next part </CenterDiv>
-    <Challenges v-else/>
+    <Challenges v-else />
     <!--
     <CenterDiv>
       <MultiTextTag tag="youhave" />

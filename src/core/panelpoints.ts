@@ -1,16 +1,47 @@
 import PowiainaNum from 'powiaina_num.js'
 import { player } from './saves'
 import { diff } from './game-loops'
+import { inChallenge, type singleChallenge } from './challenges'
+import formater from '@/lib/formater'
+
 export function getPanelPointGain() {
   let gain = player.points.root(10).div(10)
   return gain.floor()
 }
+
 export function getNextPanelPointGain() {
   let next = getPanelPointGain().add(1)
   next = next.mul(10).pow(10)
 
   return next
 }
+
+export const ppChals: singleChallenge[] = [
+  {
+    layer: 0,
+    id: 1,
+    description: "Panel Point Power's production is reversed and x0.01",
+    reward() {
+      return `Panel Point Power adds points cap`
+    },
+    goal() {
+      return `${formater(10000)} points`
+    },
+  },
+  {
+    layer: 0,
+    id: 2,
+    description: "Panel Point Power also produce points.<br><span style='color:red'>But you cannot produce points by your clicks.</span>",
+    reward() {
+      return 'Points gain from clicks is added: Autoproducted points persecond x0.4'
+    },
+    goal() {
+      return `${formater(1e14)} points`
+    }
+
+  }
+]
+
 export function panelPointReset(e?: any, force = false) {
   if (force) {
     player.points = new PowiainaNum(0)
@@ -29,7 +60,15 @@ export function panelPointReset(e?: any, force = false) {
     panelPointReset(null, true)
   }
 }
+export function panelPointGain(){
+  return   player.panelPoints
+      .pow(3)
+      .div(1e6)
+      .mul(diff)
+      .mul(inChallenge(1, 0) ? -0.01 : 1)
+}
 export function panelPointLoop() {
-  player.panelPointPower = player.panelPointPower.add(player.panelPoints.pow(3).div(1e6).mul(diff))
+  player.panelPointPower = player.panelPointPower.add(panelPointGain())
   player.linePoints = player.linePoints.add(player.panelPointPower.mul(diff))
+  if (inChallenge(2)) player.points = player.points.add(player.panelPointPower.mul(diff))
 }

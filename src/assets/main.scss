@@ -3,6 +3,7 @@
 }
 html {
   background: #000033;
+  font-family: MonospaceTypewriter;
 }
 body {
   background: #000033;
@@ -18,10 +19,14 @@ select {
   background-color: #000033;
   border: #0000aa 2px solid;
 }
+input {
+  font-family: MonospaceTypewriter;
+}
 button {
   cursor: pointer;
   font-size: 12px;
 
+  font-family: MonospaceTypewriter;
   &:not(.tab-computer) {
     max-width: 250px;
   }
@@ -140,4 +145,13 @@ h3 {
 }
 .restext {
   font-size: 200%;
+}
+
+@font-face {
+  font-family: MonospaceTypewriter;
+  src: url('./MonospaceTypewriter.ttf');
+}
+textarea, input {
+
+  background: black;
 }

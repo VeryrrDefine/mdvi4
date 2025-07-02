@@ -35,6 +35,9 @@ export enum TokenType {
   FALSE,
   IF,
   ELSE,
+  WHEN,
+  ASYNC,
+  ONCE,
 
   STRING,
 
@@ -50,6 +53,8 @@ export const keywords: { [key: string]: TokenType } = {
   false: TokenType.FALSE,
   if: TokenType.IF,
   else: TokenType.ELSE,
+  when: TokenType.WHEN,
+  once: TokenType.ONCE,
 }
 
 export function lookupIdent(ident: string) {

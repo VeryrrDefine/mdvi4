@@ -2,17 +2,24 @@ import PowiainaNum from 'powiaina_num.js'
 import { player } from './saves'
 import { Upgrade } from './upgrade'
 import format from '@/lib/formater'
+
+export function linePointsEffect() {
+  return player.linePoints.add(1).max(0.0001).pow(0.5)
+}
+
 export function linePointsGain() {
-  let gain = player.points.root(5).div(10)
-  if (upgrades[5].status) gain = gain.mul(player.linePoints.root(5))
+  let gain = player.points.max(0).root(5).div(10)
+  if (upgrades[5].status) gain = gain.mul(player.linePoints.max(1).root(5))
   return gain.floor()
 }
+
 export function nextLineGain() {
   let next = linePointsGain().add(1)
-  if (upgrades[5].status) next = next.div(player.linePoints.root(5))
+  if (upgrades[5].status) next = next.div(player.linePoints.max(1).root(5))
   next = next.mul(10).pow(5)
   return next
 }
+
 export function lineReset(e?: any, force = false) {
   if (linePointsGain().gte(1) || force) {
     if (!force) player.linePoints = player.linePoints.add(linePointsGain())
@@ -21,10 +28,6 @@ export function lineReset(e?: any, force = false) {
     player.buyables.accelerators = new PowiainaNum(0)
     player.buyables.autoclickers = new PowiainaNum(0)
   }
-}
-
-export function linePointEffect() {
-  return player.linePoints.add(1).max(1).pow(0.5)
 }
 
 export const upgrades = [

@@ -231,6 +231,24 @@ export class FunctionLiteral implements Expression {
   }
 }
 
+export class WhenExpression implements Expression {
+  tokenLiteral(): string {
+    return this.token.literal
+  }
+  token: Token
+  cond: Expression
+  body: BlockStatement
+  eventonce: boolean
+  getString(): string {
+    return `when ${this.cond.getString()} ${this.body?.getString?.()}`
+  }
+  constructor(token: Token, cond: Expression, body: BlockStatement) {
+    this.token = token
+    this.cond = cond
+    this.body = body
+    this.eventonce = false
+  }
+}
 export class CallExpression implements Expression {
   tokenLiteral(): string {
     return this.token.literal
@@ -248,7 +266,6 @@ export class CallExpression implements Expression {
   }
 }
 export class GetPropertiesExpression implements Expression {
-
   tokenLiteral(): string {
     return this.token.literal
   }
@@ -267,13 +284,15 @@ export class GetPropertiesExpression implements Expression {
 export class ArrayLiteral implements Expression {
   token: Token
   elements: Expression[]
-  tokenLiteral() {return this.token.literal}
+  tokenLiteral() {
+    return this.token.literal
+  }
   getString(): string {
-    return "["+this.elements.map((x)=>x.getString()).join(",")+"]"
+    return '[' + this.elements.map((x) => x.getString()).join(',') + ']'
   }
 
   constructor(token: Token, elements: Expression[]) {
     this.token = token
-    this.elements = elements;
+    this.elements = elements
   }
 }

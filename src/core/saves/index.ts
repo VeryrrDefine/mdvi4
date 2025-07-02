@@ -33,6 +33,7 @@ export interface Player {
   gameBoost: number
   curChallenge: number[]
   challenges: PowiainaNum[][]
+  scripts: string[]
 }
 function getInitialPlayerData(): Player {
   return {
@@ -65,13 +66,16 @@ function getInitialPlayerData(): Player {
     unrunnedTimes: 0,
     gameBoost: 0,
     curChallenge: [0],
-    challenges: [[new PowiainaNum(0)]],
+    challenges: [[new PowiainaNum(0),new PowiainaNum(0)]],
+    scripts: [
+      'let fibbonacci = fn(a) {\nif (a<=2) { return 1; }\nelse { return fibbonacci(a-1) + fibbonacci(a-2); }\n};puts(fibbonacci(10))',
+    ],
   }
 }
 
 let player: Player = getInitialPlayerData()
 
-const blackListProperties: string[] = []
+const blackListProperties: string[] = ['scripts']
 function deepCopyProps(source: any, target: any) {
   for (const key in source) {
     if (source.hasOwnProperty(key)) {
@@ -104,10 +108,7 @@ function transformToP(object: any): any {
     if (blackListProperties.includes(key)) {
       continue
     }
-    if (
-      typeof object[key] === 'string' &&
-      !new PowiainaNum(object[key]).array[0].toString().includes('NaN')
-    ) {
+    if (typeof object[key] === 'string' && !new PowiainaNum(object[key]).isNaN()) {
       object[key] = new PowiainaNum(object[key])
     }
     if (typeof object[key] === 'object') {
@@ -126,8 +127,13 @@ function load(): void {
   player.unrunnedTimes += Date.now() - player.lastUpdated
   player.lastUpdated = Date.now()
   player = reactive(player) as Player
+  postInit(player)
 }
-
+function postInit(player: Player) {
+  if(player.scripts.length < 20) {
+    player.scripts.length = 20;
+  }
+}
 function save(): void {
   localStorage.setItem(SAVE_ID, saveSerializer.serialize(player))
 }
@@ -177,7 +183,10 @@ export function import_file(): void {
       const save = fr.result
       const temp_player: any = saveSerializer.deserialize(save)
       transformToP(temp_player)
+      temp_player.unrunnedTimes = temp_player.unrunnedTimes + Date.now() - temp_player.lastUpdated
+      temp_player.lastUpdated = Date.now()
       Object.assign(player, temp_player)
+  postInit(player)
     }
     fr.readAsText(a.files[0])
   }

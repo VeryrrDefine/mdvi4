@@ -9,8 +9,8 @@ import MultiTextTag from './ui/MultiTextTag.vue'
 import { onMounted, watch, ref } from 'vue'
 import type PowiainaNum from 'powiaina_num.js'
 import { resetAnimation } from '@/utils/resetAnimation.ts'
-import {temp} from '@/core/temp.ts'
-import {getPointsCap} from '@/core/game.ts'
+import { temp } from '@/core/temp.ts'
+import { getPointsCap } from '@/core/game.ts'
 const usedrestext = ref<null | HTMLSpanElement>(null)
 watch(
   () => player.points,
@@ -41,7 +41,7 @@ watch(
         @dblclick="setChangePoint()"
       >
         <span style="position: relative"
-          >{{ format(player.points, 0)
+          >{{ format(player.points)
           }}<span ref="usedrestext" class="usedresource" style="animation: none">-60</span>
         </span>
       </div>
