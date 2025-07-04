@@ -4,7 +4,7 @@ import { player } from './saves'
 import type { StringOrFunc } from '@/lib/fnchoice'
 
 export const challengeFunctions = [() => panelPointReset(null, true)]
-export const challengeGoalFunctions: (() => boolean)[][] = [[() => player.points.gte(10000),() => player.points.gte(1e13)]]
+export const challengeGoalFunctions: (() => boolean)[][] = [[() => player.points.gte(10000),() => player.points.gte(1e13),() => player.points.gte(1e13)]]
 export function enterChallenge(id: number, layer = 0) {
   challengeFunctions[layer]()
   player.curChallenge[layer] = id

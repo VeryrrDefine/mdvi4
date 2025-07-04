@@ -1,7 +1,7 @@
 <template>
   <span>
     <slot></slot>
-    <span v-if="softcapped(props.value, props.capid)" style="font-style: italic">(softcaped)</span>
+    <span v-if="softcapped(props.value, props.capid)" class="softcap">(softcapped)</span>
   </span>
 </template>
 

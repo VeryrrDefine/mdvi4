@@ -2,6 +2,7 @@ import PowiainaNum from 'powiaina_num.js'
 import { player } from './saves'
 import { Upgrade } from './upgrade'
 import format from '@/lib/formater'
+import {inChallenge} from './challenges'
 
 export function linePointsEffect() {
   return player.linePoints.add(1).max(0.0001).pow(0.5)
@@ -45,7 +46,7 @@ export const upgrades = [
       return new PowiainaNum(8)
     }
     canBuy(): boolean {
-      return player.linePoints.gte(8)
+      return !inChallenge(3) && player.linePoints.gte(8)
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
@@ -70,7 +71,7 @@ export const upgrades = [
       return new PowiainaNum(15)
     }
     canBuy(): boolean {
-      return player.linePoints.gte(15)
+      return !inChallenge(3) && player.linePoints.gte(15)
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
@@ -95,7 +96,7 @@ export const upgrades = [
       return new PowiainaNum(20)
     }
     canBuy(): boolean {
-      return player.linePoints.gte(20)
+      return !inChallenge(3) && player.linePoints.gte(20)
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
@@ -120,7 +121,7 @@ export const upgrades = [
       return new PowiainaNum(25)
     }
     canBuy(): boolean {
-      return player.linePoints.gte(25)
+      return !inChallenge(3) && player.linePoints.gte(25)
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
@@ -145,7 +146,7 @@ export const upgrades = [
       return new PowiainaNum(40)
     }
     canBuy(): boolean {
-      return player.linePoints.gte(40)
+      return !inChallenge(3) && player.linePoints.gte(40)
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
@@ -170,7 +171,7 @@ export const upgrades = [
       return new PowiainaNum(100)
     }
     canBuy(): boolean {
-      return player.linePoints.gte(100)
+      return !inChallenge(3) && player.linePoints.gte(100)
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {

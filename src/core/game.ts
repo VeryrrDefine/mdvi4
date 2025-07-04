@@ -12,7 +12,9 @@ export function addPoints() {
 }
 
 export function getPointsGainPS() {
-  return buyables.autoclickers.effect().mul(linePointsEffect())
+  let a = buyables.autoclickers.effect().mul(linePointsEffect())
+  if (inChallenge(3)) a = a.pow(0.5)
+  return a;
 }
 
 export function getPointsCap() {

@@ -66,7 +66,9 @@ function getInitialPlayerData(): Player {
     unrunnedTimes: 0,
     gameBoost: 0,
     curChallenge: [0],
-    challenges: [[new PowiainaNum(0),new PowiainaNum(0)]],
+    challenges: [
+      [new PowiainaNum(0),new PowiainaNum(0),new PowiainaNum(0)]
+    ],
     scripts: [
       'let fibbonacci = fn(a) {\nif (a<=2) { return 1; }\nelse { return fibbonacci(a-1) + fibbonacci(a-2); }\n};puts(fibbonacci(10))',
     ],

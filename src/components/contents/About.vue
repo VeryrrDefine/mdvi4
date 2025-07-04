@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 const changelogs = [
   {
+    version: '4.0.3-beta.1',
+    log: 'feat: more challenges',
+  },
+  {
     version: '4.0.2',
     log: 'feat: challenges',
   },

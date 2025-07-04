@@ -36,6 +36,18 @@ export const ppChals: singleChallenge[] = [
       return 'Points gain from clicks is added: Autoproducted points persecond x0.4'
     },
     goal() {
+      return `${formater(1e13)} points`
+    }
+
+  },
+  {
+    layer: 0,
+    id: 3,
+    description: "Points gain is ^0.5, you cannot get linepoint-upgrades.",
+    reward() {
+      return 'Improve linepoints-gain formula.[UNDONE]'
+    },
+    goal() {
       return `${formater(1e14)} points`
     }
 
