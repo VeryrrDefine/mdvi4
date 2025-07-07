@@ -8,16 +8,16 @@ import { player } from '@/core/saves'
 import { temp } from '@/core/temp'
 import MultiTextTag from '@/components/ui/MultiTextTag.vue'
 import CenterDiv from '@/components/ui/CenterDiv.vue'
-import {countChallenge} from '@/core/challenges'
-
-
+import { countChallenge } from '@/core/challenges'
 </script>
 
 <template>
   <div style="margin-top: 20px; margin-bottom: 100px">
     <CenterDiv>
-    <button @click="addPoints" class="asprad">获得1<span
-        v-if="countChallenge(2).gte(1e14)">+{{formater(getPointsGainPS())}}</span>点数</button>
+      <button @click="addPoints" class="asprad">
+        获得1<span v-if="countChallenge(2).gte(1e14)">+{{ formater(getPointsGainPS()) }}</span
+        >点数
+      </button>
     </CenterDiv>
     <p class="text-center">
       <MultiTextTag tag="gamehasaalgomakepointscouldntreach" /> {{ formater(getPointsCap(), 0) }}

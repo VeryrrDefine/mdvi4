@@ -1,15 +1,20 @@
 import PowiainaNum from 'powiaina_num.js'
 import { player } from './saves'
 import { Upgrade } from './upgrade'
-import format from '@/lib/formater'
-import {inChallenge} from './challenges'
+import { countChallenge, inChallenge } from './challenges'
 
+function exponentOfLP() {
+  if (countChallenge(3).gte(1e5)) {
+    return 2
+  }
+  return 5
+}
 export function linePointsEffect() {
   return player.linePoints.add(1).max(0.0001).pow(0.5)
 }
 
 export function linePointsGain() {
-  let gain = player.points.max(0).root(5).div(10)
+  let gain = player.points.max(0).root(exponentOfLP()).div(10)
   if (upgrades[5].status) gain = gain.mul(player.linePoints.max(1).root(5))
   return gain.floor()
 }
@@ -17,7 +22,7 @@ export function linePointsGain() {
 export function nextLineGain() {
   let next = linePointsGain().add(1)
   if (upgrades[5].status) next = next.div(player.linePoints.max(1).root(5))
-  next = next.mul(10).pow(5)
+  next = next.mul(10).pow(exponentOfLP())
   return next
 }
 
@@ -90,7 +95,7 @@ export const upgrades = [
       return player.upgrades.linepoint3
     }
     description(): string {
-      return `点数上限从${format(1000000, 0)}到${format(10000000, 0)}(购买此升级消耗8线数)`
+      return `点数上限*10(购买此升级消耗8线数)`
     }
     cost(): PowiainaNum {
       return new PowiainaNum(20)

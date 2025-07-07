@@ -14,8 +14,7 @@ const buyable = props.buyable
   <div class="div-center text-center buyable-box">
     <div>{{ buyables[buyable].name }} ({{ formater(player.buyables[buyable], 0) }})</div>
     <div>
-      {{ buyables[buyable].desc.replace('%s', formater(buyables[buyable].effect()))
-      }}
+      {{ buyables[buyable].desc.replace('%s', formater(buyables[buyable].effect())) }}
 
       <template v-if="buyables[buyable].softcapid !== undefined">
         <Softcap

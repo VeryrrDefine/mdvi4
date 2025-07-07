@@ -21,6 +21,12 @@ import { device } from './core/game-loops'
 </template>
 
 <style scoped>
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #003;
+}
 header.mobile {
   display: flex;
   flex-direction: column;

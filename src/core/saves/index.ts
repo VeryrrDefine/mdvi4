@@ -5,6 +5,7 @@ import PowiainaNum from 'powiaina_num.js'
 import type { Tab } from '../tab/Tabs'
 import Modal from '@/utils/Modal'
 import { formaters } from '@/lib/formater'
+import type { PlayerPlot } from '../plot'
 const SAVE_ID = 'caution_wetfloor2'
 export interface Player {
   points: PowiainaNum
@@ -16,6 +17,7 @@ export interface Player {
   tab: Tab
   visualSettings: {
     curFormater: formaters
+    hasPEITRnews: boolean
   }
   upgrades: {
     linepoint1: boolean
@@ -34,6 +36,7 @@ export interface Player {
   curChallenge: number[]
   challenges: PowiainaNum[][]
   scripts: string[]
+  plot: PlayerPlot
 }
 function getInitialPlayerData(): Player {
   return {
@@ -57,6 +60,7 @@ function getInitialPlayerData(): Player {
     },
     visualSettings: {
       curFormater: 0,
+      hasPEITRnews: false,
     },
     curDimension: 0,
 
@@ -66,12 +70,13 @@ function getInitialPlayerData(): Player {
     unrunnedTimes: 0,
     gameBoost: 0,
     curChallenge: [0],
-    challenges: [
-      [new PowiainaNum(0),new PowiainaNum(0),new PowiainaNum(0)]
-    ],
+    challenges: [[new PowiainaNum(0), new PowiainaNum(0), new PowiainaNum(0)]],
     scripts: [
       'let fibbonacci = fn(a) {\nif (a<=2) { return 1; }\nelse { return fibbonacci(a-1) + fibbonacci(a-2); }\n};puts(fibbonacci(10))',
     ],
+    plot: {
+      at_max_hardcap: false,
+    },
   }
 }
 
@@ -132,8 +137,8 @@ function load(): void {
   postInit(player)
 }
 function postInit(player: Player) {
-  if(player.scripts.length < 20) {
-    player.scripts.length = 20;
+  if (player.scripts.length < 20) {
+    player.scripts.length = 20
   }
 }
 function save(): void {
@@ -188,7 +193,7 @@ export function import_file(): void {
       temp_player.unrunnedTimes = temp_player.unrunnedTimes + Date.now() - temp_player.lastUpdated
       temp_player.lastUpdated = Date.now()
       Object.assign(player, temp_player)
-  postInit(player)
+      postInit(player)
     }
     fr.readAsText(a.files[0])
   }

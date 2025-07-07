@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import news from '@/news'
+import { player } from '@/core/saves'
 
 interface NewsMessage {
   id: string
@@ -60,7 +61,8 @@ const restart = () => {
 const prepareNextMessage = () => {
   if (!line.value) return
 
-  const canShow = (item: NewsMessage) => item.unlocked ?? true // && !recentTickers.value.includes(item.id);
+  const canShow = (item: NewsMessage) =>
+    item.unlocked ?? (item.id.startsWith('peitr') ? player.visualSettings.hasPEITRnews : true) // && !recentTickers.value.includes(item.id);
 
   if (nextNewsMessageId.value) {
     const specified = news.find((m) => m.id === nextNewsMessageId.value)

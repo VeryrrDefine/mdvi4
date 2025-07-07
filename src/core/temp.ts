@@ -12,6 +12,7 @@ function tempData() {
     simulatingTime: false,
 
     runningProgram: new Program(new Token()),
+    expands: ~~0x7fffffff, // bitmap
   }
 }
 

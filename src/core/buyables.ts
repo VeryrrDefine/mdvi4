@@ -1,7 +1,8 @@
 import PowiainaNum from 'powiaina_num.js'
 import { player } from './saves'
 import { applySoftcap } from './softcaps'
-import { upgrades as lpu } from './linepoint'
+import { linePointsEffect, upgrades as lpu } from './linepoint'
+import {inChallenge} from './challenges'
 
 interface singleBuyable {
   name: string
@@ -29,11 +30,14 @@ export const buyables: {
       return a
     },
     cost() {
-      return PowiainaNum.pow(1.5, player.buyables.autoclickers).mul(50)
+      return PowiainaNum.pow(1.2, player.buyables.autoclickers).mul(15)
     },
     effect() {
       let a = new PowiainaNum(this?.val?.() ?? 0).mul(buyables.accelerators.effect())
       if (lpu[3].status) a = a.mul(player.points.max(1).log10().max(0.5).mul(2))
+      a = a.mul(linePointsEffect())
+      if (inChallenge(3)) a = a.pow(0.5)
+
       return a
     },
     buy() {
@@ -51,7 +55,7 @@ export const buyables: {
     desc: 'Autoclickers效果*%s',
 
     cost() {
-      return PowiainaNum.pow(1.5, player.buyables.accelerators.pow(1.05)).mul(250)
+      return PowiainaNum.pow(1.5, player.buyables.accelerators.pow(1.05)).mul(50)
     },
     effect() {
       return applySoftcap(PowiainaNum.pow(1.5, player.buyables.accelerators), 0)

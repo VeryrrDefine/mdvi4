@@ -65,7 +65,8 @@ if (condition) {
         </li>
       </ul>
     </div>
-    <button @click="runcode">Run code</button> <input type="number" v-model="temp.curScript"><br />
+    <button @click="runcode">Run code</button>
+    <input type="number" v-model="temp.curScript" /><br />
     <textarea v-model="player.scripts[temp.curScript]"></textarea>
     <pre v-html="result.value"></pre>
   </div>

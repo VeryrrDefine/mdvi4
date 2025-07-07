@@ -6,15 +6,14 @@ import { countChallenge, inChallenge } from './challenges'
 export const secondsRunPerTick = 3000
 
 export function addPoints() {
-  if (inChallenge(2)) return;
+  if (inChallenge(2)) return
   player.points = player.points.add(1)
   if (countChallenge(2).gte(1e14)) player.points = player.points.add(getPointsGainPS().mul(0.4))
 }
 
 export function getPointsGainPS() {
-  let a = buyables.autoclickers.effect().mul(linePointsEffect())
-  if (inChallenge(3)) a = a.pow(0.5)
-  return a;
+  let a = buyables.autoclickers.effect()
+  return a
 }
 
 export function getPointsCap() {

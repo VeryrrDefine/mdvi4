@@ -18,5 +18,9 @@ function displayName(val: formaters) {
         </template>
       </select>
     </div>
+    <div>
+      <label for="openpeitr">开启peitr选集新闻（此操作及其危险）</label
+      ><input name="openpeitr" type="checkbox" v-model="player.visualSettings.hasPEITRnews" />
+    </div>
   </div>
 </template>
