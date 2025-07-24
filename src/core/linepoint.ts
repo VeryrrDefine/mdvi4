@@ -145,17 +145,17 @@ export const upgrades = [
       return player.upgrades.linepoint5
     }
     description(): string {
-      return `linepoint add caps of points(-30)`
+      return `linepoint add caps of points(-15)`
     }
     cost(): PowiainaNum {
-      return new PowiainaNum(40)
+      return new PowiainaNum(25)
     }
     canBuy(): boolean {
-      return !inChallenge(3) && player.linePoints.gte(40)
+      return !inChallenge(3) && player.linePoints.gte(25)
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
-        player.linePoints = player.linePoints.sub(30)
+        player.linePoints = player.linePoints.sub(15)
         this.status = true
         return true
       }

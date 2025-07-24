@@ -31,7 +31,6 @@ header.mobile {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 2.5cm;
 }
 main {
   border-left: 6px;

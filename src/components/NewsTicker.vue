@@ -1,16 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import news from '@/news'
+import news, { type NewsMessage } from '@/news'
 import { player } from '@/core/saves'
-
-interface NewsMessage {
-  id: string
-  text: string
-  unlocked?: boolean
-  dynamic?: boolean
-  reset?: () => void
-  onClick?: () => string | undefined
-}
 
 const ticker = ref<HTMLElement | null>(null)
 const line = ref<HTMLElement | null>(null)
@@ -74,8 +65,17 @@ const prepareNextMessage = () => {
 
   // console.log(news.filter(canShow))
 
-  let temp = randomElement(news.filter(canShow))
+  let temp1 = news.filter(canShow)
 
+  let temp;
+
+  temp = randomElement(temp1)
+  if (player.points.gte(1e20) && !player.plot.very_important_news) {
+    temp = news.filter(function(val: NewsMessage){
+      return val.id=="important1"
+    })[0]
+    player.plot.very_important_news = true;
+  }
   if (!temp) return
 
   currentNews.value = temp
@@ -96,7 +96,7 @@ const prepareNextMessage = () => {
 const scrollMessage = () => {
   if (!line.value || !ticker.value || !currentNews.value) return
 
-  const scrollSpeed = /*player.options.news.speed*/ 1 * 100
+  const scrollSpeed = player.visualSettings.newsSpeed * 100
   const scrollDuration = (ticker.value.clientWidth + line.value.clientWidth) / scrollSpeed
 
   line.value.style.transitionDuration = `${scrollDuration}s`

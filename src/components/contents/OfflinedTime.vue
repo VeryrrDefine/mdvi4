@@ -34,7 +34,7 @@ function resetGameBoost() {
   <CenterDiv>
     <p>
       <MultiTextTag tag="youhave" />
-      <span style="position: relative"
+      <span style="position: relative" class="number"
         >&nbsp;{{ formater(player.unrunnedTimes / 1e3) }}
         <span ref="usedrestext" class="usedresource" style="animation: none">-60</span> </span
       ><MultiTextTag tag="secondsof" />

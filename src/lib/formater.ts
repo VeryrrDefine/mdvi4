@@ -13,9 +13,7 @@ export const formaterMap = new Map<
   (num: PowiainaNum | number | string, precision?: number) => string
 >()
 formaterMap.set(formaters.PSICUBED2, myFormat)
-formaterMap.set(formaters.BLIND, function () {
-  return ''
-})
+formaterMap.set(formaters.BLIND, ()=>'')
 formaterMap.set(formaters.HYPERE, formatHyperE)
 formaterMap.set(formaters.POWIAINANUM_STRUCTURE, function (x: PowiainaNumSource) {
   return new PowiainaNum(x).toString(1)

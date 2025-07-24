@@ -1,7 +1,6 @@
 // format-powiainanum.js by VeryrrDefine
 // Code snippets from [format-expantanum.js by cloudytheconqueror]
 import PowiainaNum from 'powiaina_num.js'
-
 const formatFunc = (function () {
   /// FUNCTIONSTART  DONT REMOVE THIS LINE
   'use strict'

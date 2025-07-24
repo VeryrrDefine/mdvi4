@@ -19,7 +19,7 @@ import { countChallenge } from '@/core/challenges'
         >点数
       </button>
     </CenterDiv>
-    <p class="text-center">
+    <p class="text-center" v-if="player.plot.at_max_hardcap">
       <MultiTextTag tag="gamehasaalgomakepointscouldntreach" /> {{ formater(getPointsCap(), 0) }}
     </p>
     <p class="text-center"><MultiTextTag tag="curdimension" />{{ player.curDimension }}</p>

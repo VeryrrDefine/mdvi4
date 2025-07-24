@@ -11,6 +11,7 @@ import type PowiainaNum from 'powiaina_num.js'
 import { resetAnimation } from '@/utils/resetAnimation.ts'
 import { temp } from '@/core/temp.ts'
 import { getPointsCap } from '@/core/game.ts'
+import fnchoice from '@/lib/fnchoice.ts'
 const usedrestext = ref<null | HTMLSpanElement>(null)
 watch(
   () => player.points,
@@ -28,12 +29,15 @@ watch(
   <div>
     <div class="tab-comp" v-if="device == 'mobile'">
       <div class="tab-1">
-        <Tab
-          v-for="tab in tabs.tabs"
-          :content="tab.text"
+        <template v-for="tab in tabs.tabs"
+
           :key="tab.id"
-          @click="changeTab(player.tab, tab.id)"
-        />
+          >
+          <Tab
+          :content="tab.text"
+                  v-if="fnchoice(tab.unlocked, true)"
+                  @click="changeTab(player.tab, tab.id)"/>
+        </template>
       </div>
       <div
         class="tab-2"
@@ -75,7 +79,6 @@ watch(
   flex-wrap: wrap;
   overflow: auto;
 }
-
 .tab-2 {
   width: 33%;
   height: 100%;

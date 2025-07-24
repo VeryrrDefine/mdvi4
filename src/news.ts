@@ -1,6 +1,22 @@
 import { replaceQmoji } from './core/baixie-replace'
+import {deepCopyProps, player} from './core/saves'
 
-export default [
+export interface NewsMessage {
+  id: string
+  text: string
+  unlocked?: boolean
+  dynamic?: boolean
+  reset?: () => void
+  onClick?: () => string | undefined
+}
+var news: NewsMessage[] = [
+  {
+    id: 'important1',
+    text: "[MDVI4 VERY IMPORTANT NEWS, THIS NEWS SEND BY First News Dimensions, +0y 4d 12:30:00] 最禁, 本视有视名接连示终, 境放电脑衩, 这鞋人曾经进入过某一视言实福禁, 由于输入发, 这条新闻里面的Hanzi豆视pin接而来的, 他蚂蚁的有告伟生五我的老新pron àáâãäåareawayactuallyasastalertacceleratorsautoclickersarmv7laarch64",
+    get unlocked() {
+      return player.points.gte(1e20)
+    }
+  },
   {
     id: 'a1',
     text: '以防你不知道，新闻是增量游戏里面最重要的一部分，因为你可以看到作者在制作废话。',
@@ -159,7 +175,10 @@ export default [
   },
   {
     id: 'a43',
-    text: '17. 点击这个新闻让你的基础拜谢变成拜谢. *点击后* 权限不足,请给予拜谢帝管理员后生效.',
+    text: '点击这个新闻让你的基础拜谢变成拜谢. ',
+    onClick() {
+      return `bash: no such file or directory: /var/game/basicbaixie`
+    }
   },
   {
     id: 'a44',
@@ -233,12 +252,15 @@ export default [
     id: 'peitr10',
     text: '26. 0100000a7曾经被溜溜溜达嘿枪了,原因是拖更接力树,他的接力树直到现在都没有动静(已经被传走了),还有Banana3864,著名的graphomata大神,曾经是#7的终极实力,但是他因为拖更接力树被#60的溜溜溜达嘿给杀了,还夺走了他的管理员,现在接力树活动还在如火如荼的进行中,0100000a7和Banana3864成功起到了杀鸡儆猴的作用.',
   },
-].map((news) => {
+]
+
+export default news.map((news) => {
   let newobj = {
-    id: news.id,
-    text: replaceQmoji(news.text),
-  }
+  ...news
+  };
+  newobj.text = replaceQmoji(newobj.text)
   if (news.id.startsWith('peitr'))
     newobj.text = '<span style="color: red">[PEITR-highbinding]</span>' + newobj.text
-  return newobj
+  return newobj as NewsMessage
 })
+

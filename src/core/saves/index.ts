@@ -18,6 +18,7 @@ export interface Player {
   visualSettings: {
     curFormater: formaters
     hasPEITRnews: boolean
+    newsSpeed: number
   }
   upgrades: {
     linepoint1: boolean
@@ -61,6 +62,7 @@ function getInitialPlayerData(): Player {
     visualSettings: {
       curFormater: 0,
       hasPEITRnews: false,
+      newsSpeed: 1,
     },
     curDimension: 0,
 
@@ -76,6 +78,7 @@ function getInitialPlayerData(): Player {
     ],
     plot: {
       at_max_hardcap: false,
+      very_important_news: false,
     },
   }
 }
@@ -83,7 +86,7 @@ function getInitialPlayerData(): Player {
 let player: Player = getInitialPlayerData()
 
 const blackListProperties: string[] = ['scripts']
-function deepCopyProps(source: any, target: any) {
+export function deepCopyProps(source: any, target: any) {
   for (const key in source) {
     if (source.hasOwnProperty(key)) {
       // 如果源对象的属性是对象或数组，则递归复制
@@ -182,6 +185,7 @@ function getCurrentBeijingTime(): string {
 export function import_file(): void {
   const a = document.createElement('input')
   a.setAttribute('type', 'file')
+  a.setAttribute('accepted', '.txt')
   a.click()
   a.onchange = () => {
     const fr = new FileReader()

@@ -5,6 +5,7 @@ import ModalService from '@/utils/Modal'
 
 export interface PlayerPlot {
   at_max_hardcap: boolean
+  very_important_news: boolean
 }
 
 export function checkPlot() {
