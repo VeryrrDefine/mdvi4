@@ -238,6 +238,7 @@ const formatFunc = (function () {
   function format(num, precision = 4, options = {}) {
     const UCF = !!(options.UCF || false)
     const replaceBeforeF = options.replaceBeforeF
+    const enginnering = options.enginnering;
     if (PowiainaNum.isNaN(num)) return 'NaN'
     let precision2 = Math.max(3, precision) // for e
     let precision3 = Math.max(4, precision) // for F, G, H
@@ -247,6 +248,8 @@ const formatFunc = (function () {
     if (num.abs().lt(1e-308)) return (0).toFixed(precision)
     if (num.sign < 0) return '-' + format(num.neg(), precision)
     if (num.isInfinite()) return 'Infinity'
+    if (num.gt("-10^^5") && num.lt("10^^5") && replaceBeforeF) 
+      return replaceBeforeF(num, precision)
     if (num.lt('0.001')) {
       return '(' + format(num.rec()) + ')e-1'
     } else if (num.lt(1)) {
@@ -271,6 +274,14 @@ const formatFunc = (function () {
         p = precision2 - Math.log10(bottom) + 3
       }
       p = Math.max(Math.floor(p), 0)
+
+      if (enginnering) {
+        let t;
+        t = e;
+        e = 3*Math.floor(e/3)
+        let d = Math.round((t-e)*3);
+        m = m*10**d;
+      }
       return 'e'.repeat(rep) + regularFormat(m, p) + 'e' + commaFormat(e)
     } else if (num.lt('10^^1000000')) {
       // 1F5 ~ F1,000,000

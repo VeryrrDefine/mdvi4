@@ -5,6 +5,7 @@ export default (
   precision?: number,
   options?: {
     UCF?: boolean
+    engineering: boolean
     replaceBeforeF?: (num: PowiainaNum | number | string, precision?: number) => string
   },
 ) => string
