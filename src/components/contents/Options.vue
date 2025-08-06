@@ -9,7 +9,7 @@ const dev = import.meta.env.DEV
 </script>
 
 <template>
-  <div>
+  <div class="div-center text-center">
     <button @click="requestedHardReset">硬重置</button>
     <button @click="export_file">导出至文件</button>
     <button @click="import_file">从文件导入</button>

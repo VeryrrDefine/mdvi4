@@ -9,9 +9,12 @@ import { device } from '@/core/game-loops'
 const props = defineProps(['content'])
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 div {
   border: #33f 1px solid;
+  &:hover {
+    cursor: pointer;
+  }
 }
 .computer {
   padding: 5px;

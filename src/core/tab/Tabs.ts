@@ -40,7 +40,6 @@ import type { DefineComponent } from 'vue'
 import { player } from '../saves'
 import PanelTab from '@/components/contents/PanelTab/PanelTab.vue'
 import OfflinedTime from '@/components/contents/OfflinedTime.vue'
-import Minigames from '@/components/contents/Minigames.vue'
 export const tabs: Tabset = {
   tabs: [
     {
@@ -107,22 +106,5 @@ export const tabs: Tabset = {
         },
       ],
     },
-    {
-      text: 'Minigames',
-      id: 3,
-      subtabs: [
-        {
-          text: "Dev only",
-          component: Minigames,
-          id: 0,
-          unlocked() {
-            return false
-          },
-        }
-      ],
-          unlocked() {
-            return false
-          },
-    }
   ],
 }

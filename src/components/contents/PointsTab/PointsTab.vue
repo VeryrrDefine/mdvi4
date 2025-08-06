@@ -12,6 +12,9 @@ import { countChallenge } from '@/core/challenges'
 </script>
 
 <template>
+  <p style="text-align: center;color: grey;">
+    从0维度的一个点，到更高维度的线，面，体……后面是什么？<br>
+  </p>
   <div style="margin-top: 20px; margin-bottom: 100px">
     <CenterDiv>
       <button @click="addPoints" class="asprad">

@@ -7,14 +7,5 @@ export const texts = {
     whichgivesyou: '提供了',
     secondsof: '秒',
     offlinedtime: '离线时间',
-  },
-  en: {
-    youhave: 'You have',
-    gamehasaalgomakepointscouldntreach: "Game has a algorithm which makes points couldn't reach ",
-    curdimension: 'Current dimension: ',
-    panelpointpower: 'Panel Point Power',
-    whichgivesyou: 'which gives you',
-    secondsof: 'seconds of',
-    offlinedtime: 'offlined time',
-  },
+  }
 }

@@ -12,6 +12,7 @@ import { resetAnimation } from '@/utils/resetAnimation.ts'
 import { temp } from '@/core/temp.ts'
 import { getPointsCap } from '@/core/game.ts'
 import fnchoice from '@/lib/fnchoice.ts'
+import Resources from './Resources.vue'
 const usedrestext = ref<null | HTMLSpanElement>(null)
 watch(
   () => player.points,
@@ -51,7 +52,8 @@ watch(
       </div>
     </div>
     <div v-if="device == 'computer'" class="text-center">
-      <p><MultiTextTag tag="youhave" /> {{ format(player.points, 0) }} 点数</p>
+      <p><MultiTextTag tag="youhave" /> <span style="font-size: 300%;">{{format(player.points, 0)}}</span> 点数</p>
+      <Resources />
       <div>
         <Tab
           style="display: inline-block"

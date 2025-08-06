@@ -32,6 +32,9 @@ function resetGameBoost() {
 
 <template>
   <CenterDiv>
+    <p style="text-align: center;color: grey;">
+      因为一些事情而耽误的时间，我们希望可以重新利用。<br>
+    </p>
     <p>
       <MultiTextTag tag="youhave" />
       <span style="position: relative" class="number"
@@ -40,7 +43,7 @@ function resetGameBoost() {
       ><MultiTextTag tag="secondsof" />
       <MultiTextTag tag="offlinedtime" />
     </p>
-    <button @click="useOffline">Use 60 seconds of offlined times for a 1 min x2 boost</button>
+    <button @click="useOffline">使用60秒的时间，获得60秒加速。</button>
     <button @click="temp.simulatingTime = true">Simulate rest times</button>
     <button @click="temp.simulatingTime = false">Stop simulate</button>
     <p @dblclick="resetGameBoost">Game is boosting in {{ formater(player.gameBoost) }} seconds</p>

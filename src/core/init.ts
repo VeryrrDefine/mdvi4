@@ -5,6 +5,7 @@ import { load, save } from './saves'
 import { initTemp } from './temp'
 import { postInitVRDLang } from './vrd-lang'
 import { watchListeners } from './window-message-watcher'
+import VueVatex from 'vatex'
 
 export function init() {
   load()
@@ -13,5 +14,5 @@ export function init() {
   setInterval(save, 2000)
   setInterval(mainLoop, 1000 / 60)
   watchListeners()
-  createApp(App).mount('#app')
+  createApp(App).use(VueVatex).mount('#app')
 }

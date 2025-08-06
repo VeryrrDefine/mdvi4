@@ -25,7 +25,7 @@ export const buyables: {
     desc: '每秒获得 %s 点数',
     val() {
       let a = player.buyables.autoclickers
-      if (lpu[1].status) a = a.add(player.buyables.accelerators)
+      if (lpu[1].status) a = a.add(player.buyables.accelerators.mul(1.3))
 
       return a
     },

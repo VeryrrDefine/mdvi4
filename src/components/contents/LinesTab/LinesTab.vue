@@ -13,6 +13,9 @@ import CenterDiv from '@/components/ui/CenterDiv.vue'
 </script>
 
 <template>
+  <p style="text-align: center;color: grey;">
+    我们成功升级了维度，从0维到1维。<br>
+  </p>
   <div style="margin-top: 20px; margin-bottom: 100px">
     <CenterDiv>
       <p>你有 {{ formater(player.linePoints) }} 线数</p>
@@ -25,12 +28,18 @@ import CenterDiv from '@/components/ui/CenterDiv.vue'
     </CenterDiv>
 
     <div>
-      <Upgrade :upgrade="upgrades[0]" currency="line points" />
-      <Upgrade :upgrade="upgrades[1]" currency="line points" />
-      <Upgrade :upgrade="upgrades[2]" currency="line points" />
-      <Upgrade :upgrade="upgrades[3]" currency="line points" />
-      <Upgrade :upgrade="upgrades[4]" currency="line points" />
-      <Upgrade :upgrade="upgrades[5]" currency="line points" />
+      <table align="center">
+        <tr>
+          <Upgrade :upgrade="upgrades[0]" currency="line points" />
+          <Upgrade :upgrade="upgrades[1]" currency="line points" />
+          <Upgrade :upgrade="upgrades[2]" currency="line points" />
+          <Upgrade :upgrade="upgrades[3]" currency="line points" />
+        </tr>
+        <tr>
+          <Upgrade :upgrade="upgrades[4]" currency="line points" />
+          <Upgrade :upgrade="upgrades[5]" currency="line points" />
+        </tr>
+      </table>
     </div>
   </div>
 </template>

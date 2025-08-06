@@ -10,7 +10,7 @@ function exponentOfLP() {
   return 5
 }
 export function linePointsEffect() {
-  return player.linePoints.add(1).max(0.0001).pow(0.5)
+  return player.linePoints.add(1).max(0.0001).pow(1.23)
 }
 
 export function linePointsGain() {
@@ -29,8 +29,8 @@ export function nextLineGain() {
 export function lineReset(e?: any, force = false) {
   if (linePointsGain().gte(1) || force) {
     if (!force) player.linePoints = player.linePoints.add(linePointsGain())
-    player.points = new PowiainaNum(0)
-    if (upgrades[0].status) player.points = new PowiainaNum(120)
+    player.points = player.points.pow(0.5)
+    if (upgrades[0].status) player.points = player.points.mul(2);
     player.buyables.accelerators = new PowiainaNum(0)
     player.buyables.autoclickers = new PowiainaNum(0)
   }
@@ -45,7 +45,7 @@ export const upgrades = [
       return player.upgrades.linepoint1
     }
     description(): string {
-      return '每一次重置都会从120点数开始'
+      return '每一次重置保留的点数×2'
     }
     cost(): PowiainaNum {
       return new PowiainaNum(8)
@@ -55,7 +55,6 @@ export const upgrades = [
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
-        player.linePoints = player.linePoints.sub(8)
         this.status = true
         return true
       }
@@ -70,7 +69,7 @@ export const upgrades = [
       return player.upgrades.linepoint2
     }
     description(): string {
-      return '每个Accelerators给予1免费的Autoclickers（购买此升级消耗8线数）'
+      return '每个Accelerators给予1.3免费的Autoclickers'
     }
     cost(): PowiainaNum {
       return new PowiainaNum(15)
@@ -80,7 +79,6 @@ export const upgrades = [
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
-        player.linePoints = player.linePoints.sub(8)
         this.status = true
         return true
       }
@@ -95,7 +93,7 @@ export const upgrades = [
       return player.upgrades.linepoint3
     }
     description(): string {
-      return `点数上限*10(购买此升级消耗8线数)`
+      return `点数上限×10`
     }
     cost(): PowiainaNum {
       return new PowiainaNum(20)
@@ -105,7 +103,6 @@ export const upgrades = [
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
-        player.linePoints = player.linePoints.sub(8)
         this.status = true
         return true
       }
@@ -120,7 +117,7 @@ export const upgrades = [
       return player.upgrades.linepoint4
     }
     description(): string {
-      return `点数增加Autoclickers的效果(-8)`
+      return `点数增加Autoclickers的效果`
     }
     cost(): PowiainaNum {
       return new PowiainaNum(25)
@@ -130,7 +127,6 @@ export const upgrades = [
     }
     buy(): boolean {
       if (!this.status && this.canBuy()) {
-        player.linePoints = player.linePoints.sub(8)
         this.status = true
         return true
       }

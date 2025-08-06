@@ -2,10 +2,10 @@
 import { texts } from '@/multi-language'
 
 const props = defineProps<{
-  tag: keyof typeof texts.en | keyof typeof texts.zh
+  tag: keyof typeof texts.zh
 }>()
 
-const text = texts.en[props.tag]
+const text = texts.zh[props.tag]
 </script>
 
 <template>

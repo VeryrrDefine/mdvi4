@@ -12,6 +12,9 @@ import { device } from '@/core/game-loops'
 <style scoped lang="scss">
 div {
   border: #339 1px solid;
+  &:hover {
+    cursor: pointer;
+  }
 }
 .computer {
   padding: 5px;
