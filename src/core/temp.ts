@@ -13,6 +13,10 @@ function tempData() {
 
     runningProgram: new Program(new Token()),
     expands: ~~0x7fffffff, // bitmap
+    baixieSystemConsole: "",
+    BSCtips: "",
+    BSCattempts: 0,
+    yesyoushouldnt_go_there_counter: 0,
   }
 }
 

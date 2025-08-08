@@ -15,7 +15,7 @@
     "break_eternity.js": "^2.1.1",
     "katex": "^0.13.24",
     "pako": "^2.1.0",
-    "powiaina_num.js": "^0.1.12",
+    "powiaina_num.js": "file:../PowiainaNum.js",
     "sass": "^1.89.0",
     "sass-embedded": "^1.89.0",
     "vatex": "^0.1.0",

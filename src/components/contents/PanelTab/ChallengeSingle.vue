@@ -18,7 +18,7 @@ function handleChallengeButton() {
 }
 function curClass() {
   if (inChallenge(props.chal.id, props.chal.layer)) return 'actived'
-  if (countChallenge(props.chal.id, props.chal.layer).gt(0)) return 'completed'
+  if (!countChallenge(props.chal.id, props.chal.layer).isZero()) return 'completed'
   return ''
 }
 </script>

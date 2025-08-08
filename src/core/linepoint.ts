@@ -2,6 +2,7 @@ import PowiainaNum from 'powiaina_num.js'
 import { player } from './saves'
 import { Upgrade } from './upgrade'
 import { countChallenge, inChallenge } from './challenges'
+import { ppUpgrades } from './panelpoints'
 
 function exponentOfLP() {
   if (countChallenge(3).gte(1e5)) {
@@ -16,11 +17,13 @@ export function linePointsEffect() {
 export function linePointsGain() {
   let gain = player.points.max(0).root(exponentOfLP()).div(10)
   if (upgrades[5].status) gain = gain.mul(player.linePoints.max(1).root(5))
+  if (ppUpgrades[0].status) gain = gain.mul(ppUpgrades[0].effect())
   return gain.floor()
 }
 
 export function nextLineGain() {
   let next = linePointsGain().add(1)
+  if (ppUpgrades[0].status) next = next.div(ppUpgrades[0].effect())
   if (upgrades[5].status) next = next.div(player.linePoints.max(1).root(5))
   next = next.mul(10).pow(exponentOfLP())
   return next

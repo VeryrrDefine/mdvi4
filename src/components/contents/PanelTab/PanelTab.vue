@@ -44,7 +44,11 @@ import Upgrade from '@/components/Upgrade.vue'
     </Expand>
 
     <Expand v-if="countChallenge(3).gte(1e5)" :expandid="1">
-      <Upgrade :upgrade="ppUpgrades[0]" currency="panel points" />
+      <tr>
+        <Upgrade :upgrade="ppUpgrades[0]" currency="panel points" />
+        <Upgrade :upgrade="ppUpgrades[1]" currency="panel points" />
+        <Upgrade :upgrade="ppUpgrades[2]" currency="panel points" />
+      </tr>
     </Expand>
     <!--
     <CenterDiv>

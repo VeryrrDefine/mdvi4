@@ -1,12 +1,15 @@
 import { saveSerializer } from './serializer'
-import { reactive } from 'vue'
+import { reactive, watchEffect } from 'vue'
 import PowiainaNum from 'powiaina_num.js'
 
 import type { Tab } from '../tab/Tabs'
 import Modal from '@/utils/Modal'
 import { formaters } from '@/lib/formater'
 import type { PlayerPlot } from '../plot'
-const SAVE_ID = 'caution_wetfloor2'
+import { temp } from '../temp'
+import { panelPointReset } from '../panelpoints'
+import { lineReset } from '../linepoint'
+const SAVE_ID = 'caution_wetfloor2_test5'
 export interface Player {
   points: PowiainaNum
   lastUpdated: number
@@ -27,6 +30,9 @@ export interface Player {
     linepoint4: boolean
     linepoint5: boolean
     linepoint6: boolean
+    panelpoint1: boolean
+    panelpoint2: boolean
+    panelpoint3: boolean
   }
   curDimension: number
   linePoints: PowiainaNum
@@ -58,6 +64,9 @@ function getInitialPlayerData(): Player {
       linepoint4: false,
       linepoint5: false,
       linepoint6: false,
+      panelpoint1: false,
+      panelpoint2: false,
+      panelpoint3: false,
     },
     visualSettings: {
       curFormater: 0,
@@ -79,6 +88,13 @@ function getInitialPlayerData(): Player {
     plot: {
       at_max_hardcap: false,
       very_important_news: false,
+      terminal_discovered: false,
+      what_is_this_shard: false,
+      yes_you_shouldnt_go_there: false,
+
+      yysgt_reached: false,
+      fake_hard_reseted: false,
+      fake_hard_resets: 0,
     },
   }
 }
@@ -129,10 +145,15 @@ function transformToP(object: any): any {
 
 function load(): void {
   player = getInitialPlayerData()
-  if (localStorage.getItem(SAVE_ID)) {
-    const temp_player: any = saveSerializer.deserialize(localStorage.getItem(SAVE_ID))
-    deepCopyProps(temp_player, player)
-    transformToP(player)
+  try{
+    if (localStorage.getItem(SAVE_ID)) {
+      const temp_player: any = saveSerializer.deserialize(localStorage.getItem(SAVE_ID))
+      deepCopyProps(temp_player, player)
+      transformToP(player)
+    }
+  } catch {
+    console.error("The save meet a problem")
+    player=getInitialPlayerData();
   }
   player.unrunnedTimes += Date.now() - player.lastUpdated
   player.lastUpdated = Date.now()
@@ -150,6 +171,23 @@ function save(): void {
 
 function hardReset(): void {
   Object.assign(player, getInitialPlayerData()) as Player
+}
+function fakeHardReset(): void {
+  let tag=false;
+  let hardresets = player.plot.fake_hard_resets;
+  if (player.plot.yysgt_reached) tag = true
+  if (player.plot.fake_hard_resets==0)
+    Object.assign(player, getInitialPlayerData()) as Player
+  if (player.plot.fake_hard_resets==1)
+    panelPointReset()
+  if (player.plot.fake_hard_resets==2)
+    panelPointReset()
+  if (player.plot.fake_hard_resets==3)
+    lineReset()
+  if (player.plot.fake_hard_resets==4)
+    lineReset()
+  player.plot.fake_hard_reseted = tag;
+  player.plot.fake_hard_resets = hardresets+1;
 }
 
 export { load, save, player }
@@ -206,8 +244,10 @@ export function import_file(): void {
 export function requestedHardReset() {
   Modal.show({
     title: '硬重置存档!?!?',
-    content:
-      '你真的要硬重置吗？这将重置当前存档的所有内容，你不会获得任何奖励！<img style="height: 1em; vertical-align: middle;" src="jingxia.gif">',
+    get content() {
+      return '你真的要硬重置吗？'+(
+        (!player.plot.yysgt_reached)?'这将重置当前存档的所有内容，你不会获得任何奖励！<img style="height: 1em; vertical-align: middle;" src="jingxia.gif">': "<span class='red'>这就是你应该做的。</span>")
+    },
     closeOnClickMask: false,
     buttons: [
       {
@@ -221,7 +261,12 @@ export function requestedHardReset() {
         text: '我确定我在做什么！',
         handler(e, instance) {
           instance?.handleConfirm?.()
-          hardReset()
+          if (player.plot.yysgt_reached) {
+            temp.yesyoushouldnt_go_there_counter = 0;
+            fakeHardReset()
+          } else {
+            hardReset()
+          }
         },
         class: 'danger-button',
       },

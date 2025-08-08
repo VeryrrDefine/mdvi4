@@ -14,16 +14,16 @@ import { getPointsCap } from '@/core/game.ts'
 import fnchoice from '@/lib/fnchoice.ts'
 import Resources from './Resources.vue'
 const usedrestext = ref<null | HTMLSpanElement>(null)
-watch(
-  () => player.points,
-  function (newValue: PowiainaNum, oldValue: PowiainaNum) {
-    if (newValue.lt(oldValue) && usedrestext.value) {
-      let d = usedrestext.value
-      d.innerText = '-' + format(oldValue.sub(newValue))
-      resetAnimation(d, 'usedresource 2s ease-out')
-    }
-  },
-)
+// watch(
+//   player.points,
+//   function (newValue: PowiainaNum, oldValue: PowiainaNum) {
+//     if (newValue.lt(oldValue) && usedrestext.value) {
+//       let d = usedrestext.value
+//       d.innerText = '-' + format(oldValue.sub(newValue))
+//       resetAnimation(d, 'usedresource 2s ease-out')
+//     }
+//   },
+// )
 </script>
 
 <template>

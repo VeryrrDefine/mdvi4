@@ -12,7 +12,7 @@ export default (
 export const regularFormat: (num: PowiainaNum, precision: number) => string
 export const commaFormat: (num: PowiainaNum, precision: number) => string
 export const myPolarize: (
-  array: any,
+  arr01: any,
   hasOperationRepeat?: boolean,
   toArrowVared?: boolean,
   parseToArrowNum?: number,

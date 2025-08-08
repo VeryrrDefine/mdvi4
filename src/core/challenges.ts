@@ -13,7 +13,8 @@ export function enterChallenge(id: number, layer = 0) {
 }
 
 export function exitChallenge(id: number, layer = 0) {
-  if (challengeGoalFunctions[layer][id - 1]) player.challenges[layer][id - 1] = player.points
+  if (challengeGoalFunctions[layer][id - 1]) 
+    player.challenges[layer][id - 1] = player.challenges[layer][id - 1].max(player.points)
   challengeFunctions[layer]()
   player.curChallenge[layer] = 0
 }

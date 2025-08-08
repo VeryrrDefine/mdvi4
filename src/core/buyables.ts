@@ -14,6 +14,7 @@ interface singleBuyable {
   canAfford(): boolean
   softcapid?: number
   val?(): PowiainaNum
+  costInverse(res: PowiainaNum): PowiainaNum
 }
 
 export const buyables: {
@@ -31,6 +32,9 @@ export const buyables: {
     },
     cost() {
       return PowiainaNum.pow(1.2, player.buyables.autoclickers).mul(15)
+    },
+    costInverse(res: PowiainaNum){
+      return res.div(15).log(1.2).floor();
     },
     effect() {
       let a = new PowiainaNum(this?.val?.() ?? 0).mul(buyables.accelerators.effect())
@@ -59,6 +63,9 @@ export const buyables: {
     },
     effect() {
       return applySoftcap(PowiainaNum.pow(1.5, player.buyables.accelerators), 0)
+    },
+    costInverse(res: PowiainaNum){
+      return res.div(50).log(1.5).root(1.05).floor();
     },
     softcapid: 0,
     buy() {

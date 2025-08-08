@@ -4,6 +4,7 @@ import { diff } from './game-loops'
 import { inChallenge, type singleChallenge } from './challenges'
 import formater from '@/lib/formater'
 import { Upgrade } from './upgrade'
+import { buyables } from './buyables'
 
 export function getPanelPointGain() {
   let gain = player.points.root(10).div(10)
@@ -56,24 +57,86 @@ export const ppChals: singleChallenge[] = [
 export const ppUpgrades: Upgrade[] = [
   new (class extends Upgrade {
     buy(): boolean {
+      if (!this.status && this.canBuy()) {
+        player.panelPoints = player.panelPoints.sub(this.cost())
+        this.status = true
+        return true
+      }
+      return false
       return false
     }
     cost(): PowiainaNum {
-      return PowiainaNum.POSITIVE_INFINITY
+      return new PowiainaNum(5);
     }
     canBuy(): boolean {
-      return false
+      return player.panelPoints.gte(this.cost());
     }
     description(): string {
-      return 'foo'
+      return '线数的获取量基于面数而提升。'
     }
-    effect() {}
+    effect() {
+      return player.panelPoints.add(1).pow(0.7).max(1);
+    }
     effectDesc(effect: any): string {
-      return 'Cao'
+      return "×"+formater(effect)
     }
-    set status(x: boolean) {}
+    set status(x: boolean) {
+      player.upgrades.panelpoint1 = x;
+    }
     get status(): boolean {
+      return player.upgrades.panelpoint1
+    }
+  })(),
+  new (class extends Upgrade {
+    buy(): boolean {
+      if (!this.status && this.canBuy()) {
+        player.panelPoints = player.panelPoints.sub(this.cost())
+        this.status = true
+        return true
+      }
       return false
+      return false
+    }
+    cost(): PowiainaNum {
+      return new PowiainaNum(50);
+    }
+    canBuy(): boolean {
+      return player.panelPoints.gte(this.cost());
+    }
+    description(): string {
+      return '平面点数能量获取✖2'
+    }
+    set status(x: boolean) {
+      player.upgrades.panelpoint2 = x;
+    }
+    get status(): boolean {
+      return player.upgrades.panelpoint2
+    }
+  })(),
+  new (class extends Upgrade {
+    buy(): boolean {
+      if (!this.status && this.canBuy()) {
+        player.panelPoints = player.panelPoints.sub(this.cost())
+        this.status = true
+        return true
+      }
+      return false
+      return false
+    }
+    cost(): PowiainaNum {
+      return new PowiainaNum(200);
+    }
+    canBuy(): boolean {
+      return player.panelPoints.gte(this.cost());
+    }
+    description(): string {
+      return '自动购买点数的购买项'
+    }
+    set status(x: boolean) {
+      player.upgrades.panelpoint3 = x;
+    }
+    get status(): boolean {
+      return player.upgrades.panelpoint3
     }
   })(),
 ]
@@ -103,7 +166,18 @@ export function panelPointGain() {
     .mul(inChallenge(1, 0) ? -0.01 : 1)
 }
 export function panelPointLoop() {
-  player.panelPointPower = player.panelPointPower.add(panelPointGain())
+  player.panelPointPower = player.panelPointPower.add(panelPointGain().mul(
+    ppUpgrades[1].status ? 2 : 1
+  ))
   player.linePoints = player.linePoints.add(player.panelPointPower.mul(diff))
   if (inChallenge(2)) player.points = player.points.add(player.panelPointPower.mul(diff))
+
+    if (player.upgrades.panelpoint3) {
+      player.buyables.autoclickers = player.buyables.autoclickers.max(
+        buyables.autoclickers.costInverse(player.points)
+      )
+      player.buyables.accelerators = player.buyables.accelerators.max(
+        buyables.accelerators.costInverse(player.points)
+      )
+    }
 }

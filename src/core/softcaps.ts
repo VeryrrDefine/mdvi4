@@ -25,6 +25,15 @@ export const softcaps: ISoftcap[] = [
     },
     effectApply: 'pow',
   },
+  {
+    start() {
+      return new PowiainaNum(1e250)
+    },
+    effect() {
+      return new PowiainaNum("/1e8")
+    },
+    effectApply: 'pow',
+  },
 ]
 
 export function applySoftcap(value: PowiainaNum, id: number) {

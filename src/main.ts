@@ -8,13 +8,8 @@ import Modal from './utils/Modal'
 import formater from './lib/formater'
 import { temp } from './core/temp'
 import { makeReadonly } from './utils/readonly'
+import { watch } from 'vue'
 
-PowiainaNum.prototype.rec = PowiainaNum.prototype.reciprocate = function () {
-  if (this.isNaN() || this.eq(PowiainaNum.ZERO)) return PowiainaNum.NaN.clone()
-  if (this.abs().gt('2e323')) return PowiainaNum.ZERO.clone()
-  return PowiainaNum.div(1, this)
-}
-init()
 //方便开发调试
 declare global {
   interface Window {
@@ -27,19 +22,22 @@ declare global {
     format: typeof formater
   }
 }
-
 if (import.meta.env.DEV) {
-  window.player = makeReadonly(player)
   window.Modal = Modal
   window.parseString = parseString
   window.VEnvironment = VEnvironment
   window.temp = temp
+}
+window.PowiainaNum = PowiainaNum
+
+window.format = formater
+
+init()
+if (import.meta.env.DEV) {
+  window.player = player
 } else {
   window.player = makeReadonly(player)
 }
-window.PowiainaNum = PowiainaNum
-window.format = formater
-
 /*
 
 class Chunk {
