@@ -11,6 +11,7 @@ export interface PlayerPlot {
   yysgt_reached:boolean
   terminal_discovered: boolean
   fake_hard_reseted:boolean
+  fake_hard_resets: number
 }
 
 export function checkPlot() {

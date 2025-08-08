@@ -3,6 +3,10 @@ import ModalService from '@/utils/Modal';
 
 const changelogs = [
   {
+    version: '4.0.666',
+    log: "more interesting content"
+  },
+  {
     version: '4.0.3-beta.4',
     log: "balanced"
   },
