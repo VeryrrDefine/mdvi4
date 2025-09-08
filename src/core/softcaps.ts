@@ -34,6 +34,18 @@ export const softcaps: ISoftcap[] = [
     },
     effectApply: 'pow',
   },
+  {
+    start() {
+      return new PowiainaNum(Number.MAX_VALUE)
+    },
+    effect() {
+      return new PowiainaNum("0.9")
+    },
+    effectApply (num: PowiainaNum, start: PowiainaNum, eff: PowiainaNum) {
+      if (num.lte(start)) return num.clone()
+      return num.log10().div(start.log10()).pow(eff).mul(start.log10()).pow_base(10)
+    }
+  },
 ]
 
 export function applySoftcap(value: PowiainaNum, id: number) {

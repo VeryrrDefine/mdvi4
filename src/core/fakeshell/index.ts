@@ -1,18 +1,18 @@
 import { ref } from "vue";
 import { temp } from "../temp";
-import { BaixieSystemBXSH } from "./bxsh";
+import { BaixieSystemBXSH, BaixieSystemRunprocess } from "./bxsh";
 import { BaixieSystemReadfile } from "./filesystem";
 import { player } from "../saves";
+import { getReadlineString } from "./readline";
 
 export async function BaixieSystemEntry() {
-    player.plot.terminal_discovered=true;
     while (1){
         BaixieSystemOutput(`Baixie system\n\nbaixie login:`);
-        let result = await BaixieSystemReadfile("/dev/stdin") as string;
+        let result = await getReadlineString();
         
         if (result=="player" && player.plot.terminal_discovered) {
             pwd.value = ["home", result];
-            await BaixieSystemBXSH();
+            await BaixieSystemRunprocess("bxsh", ["bxsh"]);
             BaixieSystemClear();
         } else {
             BaixieSystemOutput(`Invalid login for user ${result}\n`)
@@ -29,5 +29,12 @@ export function BaixieSystemOutput(x: string) {
 export function BaixieSystemClear() {
     temp.baixieSystemConsole = "";
 }
-
+export const baixieConsole = {
+    get cons() {
+        return temp.baixieSystemConsole
+    },
+    set cons(x) {
+        temp.baixieSystemConsole = x
+    },
+}
 export let pwd = ref(["home"]);

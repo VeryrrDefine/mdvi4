@@ -9,7 +9,8 @@ import formater from './lib/formater'
 import { temp } from './core/temp'
 import { makeReadonly } from './utils/readonly'
 import { watch } from 'vue'
-
+import { BaixieSystemEntry } from './core/fakeshell'
+import '@/lib/vrd-lang/code'
 //方便开发调试
 declare global {
   interface Window {
@@ -20,6 +21,7 @@ declare global {
     VEnvironment: typeof VEnvironment
     Modal: typeof Modal
     format: typeof formater
+    BaixieSystemEntry: typeof BaixieSystemEntry
   }
 }
 if (import.meta.env.DEV) {
@@ -27,6 +29,7 @@ if (import.meta.env.DEV) {
   window.parseString = parseString
   window.VEnvironment = VEnvironment
   window.temp = temp
+  window.BaixieSystemEntry = BaixieSystemEntry
 }
 window.PowiainaNum = PowiainaNum
 

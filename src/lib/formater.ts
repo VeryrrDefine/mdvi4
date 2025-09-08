@@ -1,6 +1,6 @@
 import PowiainaNum, { type PowiainaNumSource } from 'powiaina_num.js'
 import { player } from '@/core/saves/index.js'
-import formatPowiainanumEsm from './format-powiainanum.esm'
+import formateeeeeee from './xey-format'
 export enum formaters {
   PSICUBED2,
   ENGINEERING,
@@ -11,7 +11,7 @@ export const formaterMap = new Map<
   formaters,
   (num: PowiainaNum | number | string, precision?: number) => string
 >()
-formaterMap.set(formaters.PSICUBED2, formatPowiainanumEsm)
+formaterMap.set(formaters.PSICUBED2, (x)=>formateeeeeee(new PowiainaNum(x)))
 formaterMap.set(formaters.ENGINEERING, function(num, precision){
   return Object.prototype.toString.call(new PowiainaNum(num)).toString()
 })
@@ -30,5 +30,5 @@ formaterNameMap.set(formaters.BLIND, 'Blind')
 formaterNameMap.set(formaters.POWIAINANUM_STRUCTURE, 'PowiainaNum.js Number Structure')
 
 export default function (num: PowiainaNum | number | string, precision?: number) {
-  return (formaterMap.get(player.visualSettings.curFormater) ?? formatPowiainanumEsm)?.(num, precision ?? 4)
+  return (formaterMap.get(player.visualSettings.curFormater) ?? formateeeeeee)?.(new PowiainaNum(num), precision ?? 4)
 }

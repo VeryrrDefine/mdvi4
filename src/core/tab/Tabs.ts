@@ -121,29 +121,32 @@ export const tabs: Tabset = {
         },
       ],
     },
-    // {
-    //   text: "4D",
-    //   id: 3,
-    //   subtabs: [
-    //     {
-    //       text: "Volume Converter",
-    //       id: 0,
-    //       component: VolumeConverter
-    //     },
-    //     {
-    //       text: "Infinity Producer",
-    //       id: 1,
-    //       component: InfiniteConverter
-    //     },
-    //     {
-    //       text: "????????",
-    //       id: 2,
-    //       component: FakeShell
-    //     }
-    //   ],
-    //   unlocked() {
-    //     return false;
-    //   },
-    // }
+    {
+      text: "4D",
+      id: 3,
+      unlocked() {
+        return player.curDimension>=4;
+      },
+      subtabs: [
+        {
+          text: "Volume Converter",
+          id: 0,
+          component: VolumeConverter
+        },
+        {
+          text: "Infinity Producer",
+          id: 1,
+          component: InfiniteConverter
+        },
+        {
+          text: "????????",
+          id: 2,
+          component: FakeShell,
+          unlocked() {
+            return player.plot.terminal_found ?? false
+          },
+        }
+      ],
+    }
   ],
 }

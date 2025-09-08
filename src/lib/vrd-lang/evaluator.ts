@@ -59,7 +59,7 @@ export const externalInfixHandlers: externalInfixType = [
     },
   },
 ]
-export function VEval(node: ASTNode, env: VEnvironment): VObject {
+export async function VEval(node: ASTNode, env: VEnvironment): Promise<VObject> {
   let left, right, val, params, body
   switch (true) {
     case node instanceof Program:
@@ -76,23 +76,23 @@ export function VEval(node: ASTNode, env: VEnvironment): VObject {
     case node instanceof StringLiteral:
       return new VString(node.value)
     case node instanceof PrefixExpression:
-      right = VEval(node.right, env)
+      right = await VEval(node.right, env)
       if (isError(right)) return right
       return evalPrefixExpression(node.operator, right)
     case node instanceof InfixExpression:
-      left = VEval(node.left, env)
-      right = VEval(node.right, env)
+      left = await VEval(node.left, env)
+      right = await VEval(node.right, env)
       if (isError(left)) return left
       if (isError(right)) return right
       return evalInfixExpression(node.operator, left, right)
     case node instanceof IfExpression:
       return evalIfExpression(node, env)
     case node instanceof ReturnStatement:
-      val = VEval(node.value, env)
+      val = await VEval(node.value, env)
       if (isError(val)) return val
       return new VReturnValue(val)
     case node instanceof LetStatement:
-      val = VEval(node.value, env)
+      val = await VEval(node.value, env)
       if (isError(val)) return val
       env.set(node.name.tokenLiteral(), val)
       return val
@@ -104,29 +104,29 @@ export function VEval(node: ASTNode, env: VEnvironment): VObject {
       const temp1 = new VFunction(params, body, env)
       return temp1
     case node instanceof ArrayLiteral:
-      const elements = evalExpressions(node.elements, env)
+      const elements = await evalExpressions(node.elements, env)
 
       if (elements.length === 1 && isError(elements[0])) return elements[0]
 
       return new VArray(elements)
 
     case node instanceof GetPropertiesExpression:
-      const leftObj = VEval(node.left, env)
+      const leftObj = await VEval(node.left, env)
       if (isError(leftObj)) return leftObj
-      const ind = VEval(node.prop, env)
+      const ind = await VEval(node.prop, env)
 
       if (isError(ind)) return ind
 
       return applyGetProperties(leftObj, ind)
     case node instanceof CallExpression:
-      const functionObj = VEval(node.fn, env)
+      const functionObj = await VEval(node.fn, env)
       if (isError(functionObj)) return functionObj
 
-      const args = evalExpressions(node.args, env)
+      const args = await evalExpressions(node.args, env)
 
       if (args.length === 1 && isError(args[0])) return args[0]
 
-      return applyFunction(functionObj, args)
+      return await applyFunction(functionObj, args)
     case node instanceof WhenExpression:
       console.log(node)
   }
@@ -142,14 +142,14 @@ function applyGetProperties(left: VObject, ind: VObject) {
       return newError('Cannot get property')
   }
 }
-function applyFunction(fn: VObject, args: VObject[]) {
+async function applyFunction(fn: VObject, args: VObject[]) {
   switch (true) {
     case fn instanceof VFunction:
       const extendedEnv = extendFunctionEnv(fn, args)
-      const evaluated = VEval(fn.body, extendedEnv)
+      const evaluated = await VEval(fn.body, extendedEnv)
       return unwrapReturnValue(evaluated)
     case fn instanceof VBuiltin:
-      return fn.fn(...args)
+      return await fn.fn(...args)
     default:
       return newError('not a function: ' + fn.type())
   }
@@ -163,10 +163,10 @@ function extendFunctionEnv(fn: VFunction, args: VObject[]) {
 function unwrapReturnValue(obj: VObject) {
   return obj instanceof VReturnValue ? obj.value : obj
 }
-function evalExpressions(expressions: Expression[], env: VEnvironment) {
+async function evalExpressions(expressions: Expression[], env: VEnvironment) {
   const result: VObject[] = []
   for (const expression of expressions) {
-    const evaluated = VEval(expression, env)
+    const evaluated = await VEval(expression, env)
     if (isError(evaluated)) {
       return [evaluated]
     }
@@ -184,8 +184,8 @@ function evalIdentifier(node: Identifier, env: VEnvironment) {
 
   return val2
 }
-function evalIfExpression(ie: IfExpression, env: VEnvironment) {
-  const condition = VEval(ie.condition, env)
+async function evalIfExpression(ie: IfExpression, env: VEnvironment) {
+  const condition = await VEval(ie.condition, env)
   if (isError(condition)) return condition
   if (isTruthy(condition)) return VEval(ie.consequence, env)
   else if (ie.alternative) return VEval(ie.alternative, env)
@@ -203,30 +203,20 @@ function isTruthy(obj: VObject) {
       return true
   }
 }
-export function evalProgram(stmts: Statement[], env: VEnvironment): VObject {
+export async function evalProgram(stmts: Statement[], env: VEnvironment): Promise<VObject> {
   let result: VObject = objConst.NULL
   for (const statement of stmts) {
-    result = VEval(statement, env)
+    result = await VEval(statement, env)
     if (result instanceof VReturnValue) return result.value
     if (result instanceof VError) return result
   }
   return result
 }
 
-export function* evalProgramY(stmts: Statement[], env: VEnvironment) {
+export async function evalBlockStatements(stmts: Statement[], env: VEnvironment): Promise<VObject> {
   let result: VObject = objConst.NULL
   for (const statement of stmts) {
-    result = VEval(statement, env)
-    if (result instanceof VReturnValue) return result.value
-    if (result instanceof VError) return result
-    yield result
-  }
-  return result
-}
-export function evalBlockStatements(stmts: Statement[], env: VEnvironment): VObject {
-  let result: VObject = objConst.NULL
-  for (const statement of stmts) {
-    result = VEval(statement, env)
+    result = await VEval(statement, env)
     if (result !== null && result instanceof VReturnValue) return result
     if (result instanceof VError) return result
   }

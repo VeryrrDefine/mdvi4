@@ -9,6 +9,7 @@ import type { PlayerPlot } from '../plot'
 import { temp } from '../temp'
 import { panelPointReset } from '../panelpoints'
 import { lineReset } from '../linepoint'
+import { v4 as uuidv4 } from 'uuid'
 const SAVE_ID = 'caution_wetfloor2_test5'
 export interface Player {
   points: PowiainaNum
@@ -38,17 +39,28 @@ export interface Player {
   linePoints: PowiainaNum
   panelPoints: PowiainaNum
   panelPointPower: PowiainaNum
+  volumePoints: PowiainaNum
   unrunnedTimes: number
   gameBoost: number
   curChallenge: number[]
   challenges: PowiainaNum[][]
   scripts: string[]
   plot: PlayerPlot
+  uuid: string
+  fd: {
+    d1: PowiainaNum
+    d2: PowiainaNum
+    d3: PowiainaNum
+    d4: PowiainaNum
+    inf_gen_t: PowiainaNum
+    inf_bases: PowiainaNum
+  }
 }
 function getInitialPlayerData(): Player {
   return {
     points: new PowiainaNum(0),
     lastUpdated: Date.now(),
+    uuid: "00000000-0000-0000-0000-000000000000",
     buyables: {
       autoclickers: new PowiainaNum(0),
       accelerators: new PowiainaNum(0),
@@ -78,6 +90,7 @@ function getInitialPlayerData(): Player {
     linePoints: new PowiainaNum(0),
     panelPoints: new PowiainaNum(0),
     panelPointPower: new PowiainaNum(0),
+    volumePoints: new PowiainaNum(0),
     unrunnedTimes: 0,
     gameBoost: 0,
     curChallenge: [0],
@@ -91,11 +104,21 @@ function getInitialPlayerData(): Player {
       terminal_discovered: false,
       what_is_this_shard: false,
       yes_you_shouldnt_go_there: false,
-
+      dimens_amount_getting_started: false,
       yysgt_reached: false,
       fake_hard_reseted: false,
       fake_hard_resets: 0,
+
+      terminal_found: false,
     },
+    fd: {
+      d1: new PowiainaNum(0),
+      d2: new PowiainaNum(0),
+      d3: new PowiainaNum(0),
+      d4: new PowiainaNum(0),
+      inf_gen_t: new PowiainaNum(0),
+      inf_bases: new PowiainaNum(0),
+    }
   }
 }
 
@@ -134,7 +157,7 @@ function transformToP(object: any): any {
     if (blackListProperties.includes(key)) {
       continue
     }
-    if (typeof object[key] === 'string' && !new PowiainaNum(object[key]).isNaN()) {
+    if (typeof object[key] === 'string' && object[key].startsWith("PN")) {
       object[key] = new PowiainaNum(object[key])
     }
     if (typeof object[key] === 'object') {
@@ -168,9 +191,10 @@ function postInit(player: Player) {
 function save(): void {
   localStorage.setItem(SAVE_ID, saveSerializer.serialize(player))
 }
-
+const savefn = save;
 function hardReset(): void {
   Object.assign(player, getInitialPlayerData()) as Player
+  player.uuid = uuidv4()
 }
 function fakeHardReset(): void {
   let tag=false;
@@ -231,11 +255,15 @@ export function import_file(): void {
     fr.onload = () => {
       const save = fr.result
       const temp_player: any = saveSerializer.deserialize(save)
+      hardReset();
       transformToP(temp_player)
       temp_player.unrunnedTimes = temp_player.unrunnedTimes + Date.now() - temp_player.lastUpdated
       temp_player.lastUpdated = Date.now()
       Object.assign(player, temp_player)
       postInit(player)
+      savefn();
+      location.reload();
+      
     }
     fr.readAsText(a.files[0])
   }
@@ -246,7 +274,7 @@ export function requestedHardReset() {
     title: '硬重置存档!?!?',
     get content() {
       return '你真的要硬重置吗？'+(
-        (!player.plot.yysgt_reached)?'这将重置当前存档的所有内容，你不会获得任何奖励！<img style="height: 1em; vertical-align: middle;" src="jingxia.gif">': "<span class='red'>这就是你应该做的。</span>")
+        (!player.plot.yysgt_reached || player.curDimension>=4)?'这将重置当前存档的所有内容，你不会获得任何奖励！<img style="height: 1em; vertical-align: middle;" src="jingxia.gif">': "<span class='red'>这就是你应该做的。</span>")
     },
     closeOnClickMask: false,
     buttons: [
@@ -261,7 +289,7 @@ export function requestedHardReset() {
         text: '我确定我在做什么！',
         handler(e, instance) {
           instance?.handleConfirm?.()
-          if (player.plot.yysgt_reached) {
+          if (player.plot.yysgt_reached || player.curDimension>=4) {
             temp.yesyoushouldnt_go_there_counter = 0;
             fakeHardReset()
           } else {

@@ -5,7 +5,7 @@ import { linePointsEffect, upgrades as lpu } from './linepoint'
 import { countChallenge, inChallenge } from './challenges'
 import { applySoftcap } from './softcaps'
 import { temp } from './temp'
-import { watch } from 'vue'
+import { capitalize, watch } from 'vue'
 export const secondsRunPerTick = 3000
 
 export function addPoints() {
@@ -17,6 +17,7 @@ export function getPointsGainPS() {
   let a = buyables.autoclickers.effect()
 
   if (player.plot.fake_hard_reseted) a = a.mul(1e5)
+  a = a.mul("1e200")
   return a
 }
 
@@ -75,6 +76,10 @@ export function getPointsCap() {
     if (temp.yesyoushouldnt_go_there_counter>=32.0) {
       cap = new PowiainaNum("/-10^^^1e92")
     }
+  }
+
+  if (player.volumePoints.gte(1)) {
+    cap = cap.mul(player.volumePoints)
   }
   return cap
 }

@@ -127,4 +127,4 @@ export class VBuiltin implements VObject {
   }
   fn: VBuiltinFunction
 }
-type VBuiltinFunction = (...args: VObject[]) => VObject
+type VBuiltinFunction = (...args: VObject[]) => Promise<VObject>

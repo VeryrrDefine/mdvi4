@@ -4,6 +4,9 @@ import { getPointsCap, getPointsGainPS, secondsRunPerTick } from '../game'
 import { temp } from '../temp'
 import { panelPointLoop } from '../panelpoints'
 import { checkPlot } from '../plot'
+import { volumePLoop } from '../volumepoints'
+import { FourD } from '../4d'
+import { infGenLoop } from '../4d/infinity-generator'
 let diff = 0
 let diff2 = 0
 export function mainLoop() {
@@ -38,11 +41,13 @@ export function mainLoop() {
     player.points = getPointsCap();
   } else {
     player.points = player.points.add(getPointsGainPS().mul(diff))
-    .min(temp.nocap ? Infinity : getPointsCap())
+    
     panelPointLoop()
   }
-    checkPlot()
-
+  checkPlot()
+  volumePLoop()
+  FourD.loop();
+  infGenLoop()
   if (player.plot.yes_you_shouldnt_go_there && !player.plot.yysgt_reached && temp.yesyoushouldnt_go_there_counter<38) {
     temp.yesyoushouldnt_go_there_counter+=diff2;
     temp.simulatingTime = false;

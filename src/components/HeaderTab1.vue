@@ -55,13 +55,16 @@ const usedrestext = ref<null | HTMLSpanElement>(null)
       <p><MultiTextTag tag="youhave" /> <span style="font-size: 300%;">{{format(player.points, 0)}}</span> 点数</p>
       <Resources />
       <div>
-        <Tab
-          style="display: inline-block"
-          v-for="tab in tabs.tabs"
-          :content="tab.text"
-          :key="tab.id"
-          @click="changeTab(player.tab, tab.id)"
-        />
+        <template  v-for="tab in tabs.tabs">
+          <Tab
+            style="display: inline-block"
+            :content="tab.text"
+              v-if="fnchoice(tab.unlocked, true)"
+            :key="tab.id"
+            @click="changeTab(player.tab, tab.id)"
+          />
+        </template>
+        
       </div>
     </div>
   </div>

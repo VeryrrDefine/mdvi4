@@ -41,7 +41,7 @@ export const buyables: {
       if (lpu[3].status) a = a.mul(player.points.max(1).log10().max(0.5).mul(2))
       a = a.mul(linePointsEffect())
       if (inChallenge(3)) a = a.pow(0.5)
-
+      a = applySoftcap(a, 2)
       return a
     },
     buy() {

@@ -1,7 +1,7 @@
-import { BaixieSystemReadfile, FakeFileSystem, fixDots, withPwd } from "./filesystem";
+import { BaixieSystemReadfile, FakeFileSystem, fixDots, splitPaths, withPwd } from "./filesystem";
 
 export const environents: Map<string, string> = new Map();
-environents.set("PATH", "/bin/")
+environents.set("PATH", "/bin/:/usr/bin")
 
 export async function searchPATHandReturnContent(path: string) {
     let paths = path.split("/");
@@ -13,7 +13,7 @@ export async function searchPATHandReturnContent(path: string) {
         fixDots(path5);
         let content = await BaixieSystemReadfile("/"+path5.join("/"));
         if (content instanceof FakeFileSystem) {
-            return;
+            return null;
         } else {
             return content;
         }
@@ -21,7 +21,7 @@ export async function searchPATHandReturnContent(path: string) {
     let envPaths = (environents.get("PATH") as string).split(":");
     for (const p of envPaths) {
         let path2 = p;
-        let paths3 = path2.split("/");
+        let paths3 = splitPaths(path2);
         fixDots(paths3);
         if (path=="") paths3 = []
         paths3 = paths3.concat(paths);
